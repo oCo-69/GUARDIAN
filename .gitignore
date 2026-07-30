@@ -1,0 +1,47 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Builds
+artifacts/
+dist/
+publish/
+
+# Local data
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
+*.log
+*.log.*
+logs/
+GuardianData/
+GuardianBackups/
+
+# Secrets
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+appsettings.Development.json
+secrets.json
+*.secrets.json
+*.token
+*.credentials
+*.key
+*.pem
+*.p12
+*.pfx
+
+# OS
+Thumbs.db
+.DS_Store
