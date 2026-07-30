@@ -73,19 +73,11 @@ La première version doit permettre de :
 
 ## Architecture documentaire
 
-La documentation active est volontairement limitée :
+Le point d’entrée officiel est [`docs/README.md`](docs/README.md). Il présente l’ordre de lecture, le rôle de chaque document et leur niveau d’autorité.
 
-| Document | Rôle |
-|---|---|
-| [MANIFESTO.md](MANIFESTO.md) | Pourquoi Guardian existe |
-| [docs/BLUEPRINT.md](docs/BLUEPRINT.md) | Règles et contrat de conception |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Organisation technique |
-| [docs/DATABASE.md](docs/DATABASE.md) | Modèle SQLite |
-| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Développement et contribution |
-| [ROADMAP.md](ROADMAP.md) | Étapes du projet |
-| [CHANGELOG.md](CHANGELOG.md) | Évolution des versions |
+Le [Manifeste](MANIFESTO.md) expose l’intention fondatrice, la [Roadmap](ROADMAP.md) ordonne les jalons et le [Changelog](CHANGELOG.md) consigne les changements notables.
 
-Les documents qui ont servi à la réflexion initiale sont conservés dans [`archives/`](archives/README.md), mais ils ne constituent plus la référence normative.
+Les documents qui ont servi à la réflexion initiale sont conservés dans [`archives/`](archives/README.md). Ils ne sont pas normatifs.
 
 ## Structure cible
 
@@ -96,10 +88,13 @@ GUARDIAN/
 ├── ROADMAP.md
 ├── CHANGELOG.md
 ├── docs/
-│   ├── BLUEPRINT.md
-│   ├── ARCHITECTURE.md
-│   ├── DATABASE.md
-│   ├── DEVELOPMENT.md
+│   ├── README.md
+│   ├── 00_CODEX_GUIDELINES.md
+│   ├── 01_BLUEPRINT.md
+│   ├── 02_ARCHITECTURE.md
+│   ├── 03_DATABASE.md
+│   ├── 04_DEVELOPMENT.md
+│   ├── 05_FEATURE_BACKLOG.md
 │   └── adr/
 ├── archives/
 ├── src/
@@ -109,6 +104,6 @@ GUARDIAN/
 
 ## Statut
 
-Le projet est en phase de fondation de la **v1.0-alpha 1**.
+Le projet est en phase de fondation de la **v1.0.0-alpha.1**.
 
 L’objectif immédiat est une application Windows essayable, centrée sur le scan, le regroupement des œuvres, l’identification TMDb assistée et la persistance locale des décisions.

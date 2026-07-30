@@ -1,5 +1,7 @@
 # Guardian v1 — Blueprint
 
+> [Documentation](README.md) · [ADR](adr/README.md)
+
 ## 1. Statut
 
 Ce document est le contrat de conception de Guardian v1.
@@ -96,6 +98,34 @@ En cas d’incertitude, Guardian isole le cas concerné et demande une décision
 | `GeneratedItem` | Élément créé dans la projection |
 | `ScanSnapshot` | État logique d’un scan |
 | `BuildRun` | Exécution d’une construction |
+
+## Glossaire
+
+### Source concepts
+
+- **Source** — collection originale de médias que Guardian observe sans la modifier.
+- **SourceRoot** — racine configurée en lecture seule contenant une partie de la Source.
+- **SourceWork** — regroupement logique local de fichiers représentant une œuvre ou un cas encore ambigu.
+- **SourceFile** — fichier média original observé dans un SourceRoot.
+- **Work** — œuvre média servant d’unité d’identité, indépendamment du nombre de fichiers associés.
+- **Series** — Work composée d’épisodes qui héritent d’une même identité de série.
+- **Movie** — Work représentant un film unique, portée par un fichier ou un groupe déclaré équivalent.
+- **Episode** — élément d’une Series repéré par ses numéros de saison et d’épisode.
+
+### Identity concepts
+
+- **Provider** — adaptateur optionnel vers une source externe d’identités et de métadonnées minimales.
+- **Candidate** — proposition non validée reliant un SourceWork à une ProviderIdentity possible.
+- **ProviderIdentity** — identité officielle minimale et normalisée fournie par un Provider.
+- **Decision** — choix validé reliant un SourceWork à une ProviderIdentity.
+- **Lock** — protection fonctionnelle empêchant le remplacement automatique d’une Decision.
+- **HistoryEvent** — trace append-only d’une action ou d’un changement significatif.
+
+### Projection concepts
+
+- **Projection** — bibliothèque Jellyfin dérivée, jetable et reconstructible.
+- **Build** — exécution qui construit ou reconstruit tout ou partie de la Projection.
+- **Audit** — comparaison entre la Source, les Decision et la Projection, éventuellement complétée par une lecture de Jellyfin.
 
 ## 6. Workflow principal
 

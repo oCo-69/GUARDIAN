@@ -1,5 +1,7 @@
 # Manifeste Guardian
 
+> La documentation normative est accessible depuis [`docs/README.md`](docs/README.md).
+
 ## La collection appartient à l’utilisateur
 
 Une bibliothèque multimédia n’est pas seulement une liste de fichiers. Elle reflète des choix, une organisation, une histoire et une manière personnelle de relier les œuvres entre elles.

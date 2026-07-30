@@ -1,5 +1,7 @@
 # ADR-005 — Les décisions validées peuvent être verrouillées
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

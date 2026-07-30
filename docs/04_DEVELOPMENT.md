@@ -1,5 +1,7 @@
 # Guide de développement
 
+> [Documentation](README.md) · [Blueprint](01_BLUEPRINT.md) · [ADR](adr/README.md)
+
 ## Prérequis prévus
 
 - Windows 11 ;
@@ -29,7 +31,7 @@ Le code applicatif ne doit pas être placé à la racine.
 
 Avant de développer une fonctionnalité :
 
-1. vérifier sa conformité au Blueprint ;
+1. vérifier sa conformité au [Blueprint](01_BLUEPRINT.md) ;
 2. identifier les invariants concernés ;
 3. créer un ADR lorsqu’une décision d’architecture nouvelle est nécessaire ;
 4. écrire ou mettre à jour les tests ;

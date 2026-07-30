@@ -1,5 +1,7 @@
 # ADR-002 — Une série est identifiée au niveau de l’œuvre
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

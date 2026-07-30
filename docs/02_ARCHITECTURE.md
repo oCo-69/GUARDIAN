@@ -1,8 +1,10 @@
 # Architecture technique
 
+> [Documentation](README.md) · [Blueprint](01_BLUEPRINT.md) · [ADR](adr/README.md)
+
 ## Objectif
 
-L’architecture doit rendre les invariants du Blueprint difficiles à violer.
+L’architecture doit rendre les invariants du [Blueprint](01_BLUEPRINT.md) difficiles à violer.
 
 Le domaine ne dépend ni de WPF, ni de SQLite, ni de TMDb, ni de Jellyfin. Les dépendances techniques sont injectées derrière des interfaces.
 

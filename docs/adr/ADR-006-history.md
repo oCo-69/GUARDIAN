@@ -1,5 +1,7 @@
 # ADR-006 — Historique append-only
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

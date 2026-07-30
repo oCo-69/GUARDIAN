@@ -1,5 +1,7 @@
 # ADR-003 — Aucune proposition n’est appliquée sans validation
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

@@ -1,5 +1,7 @@
 # ADR-004 — SQLite conserve la mémoire minimale
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

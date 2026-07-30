@@ -1,5 +1,7 @@
 # ADR-009 — TMDb est un fournisseur optionnel de candidats
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

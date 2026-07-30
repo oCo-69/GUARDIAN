@@ -1,5 +1,7 @@
 # Roadmap
 
+Cette Roadmap fixe l’ordre des jalons du projet. Le [`Feature Backlog`](docs/05_FEATURE_BACKLOG.md) décompose leur implémentation sans modifier leur priorité ni leur portée.
+
 ## v1.0.0-alpha.1 — Fondation
 
 Objectif : première application lançable.

@@ -1,5 +1,7 @@
 # ADR-008 — Aucune écriture directe dans la base Jellyfin
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte

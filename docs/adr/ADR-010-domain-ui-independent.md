@@ -1,5 +1,7 @@
 # ADR-010 — Le cœur métier est indépendant de l’interface
 
+> [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
+
 **Statut : Accepted**
 
 ## Contexte
