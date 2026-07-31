@@ -40,4 +40,10 @@ Every future entry contains:
 
 The normative source and Decision Index entry must be introduced in the same documentary change. The commit field may remain `Pending` only until that change is committed, after which a follow-up may record the SHA.
 
-No Decision Index entries exist yet.
+## DEC-0001 — Editorial Decision Semantics
+
+- Date: 2026-07-31
+- Status: Validated
+- Consequence: Editorial authority, immutable Decisions, Applicability, supersession, HistoryEvent distinction, and accepted correspondence now share one normative semantic foundation.
+- Authoritative reference: [ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md)
+- Related commit: Pending

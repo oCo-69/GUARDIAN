@@ -8,6 +8,8 @@ SQLite is Guardian's persistent memory.
 
 The database preserves local observations, minimal identities, Decisions, Locks, History, and Build state. It does not contain a complete copy of TMDb or another Provider.
 
+The data model must remain compatible with the Decision semantics defined by [ADR-011](adr/ADR-011-editorial-decision-semantics.md). ADR-011 does not prescribe a schema change.
+
 ## Primary tables
 
 ### `schema_migrations`

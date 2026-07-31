@@ -58,7 +58,7 @@ Guardian never writes to source directories.
 
 ### P2 — User authority
 
-Guardian may propose, never impose. A Candidate becomes a Decision only after explicit validation.
+Guardian may propose, never impose. Only explicit human validation creates a Decision; a Candidate never has editorial authority. [ADR-011](adr/ADR-011-editorial-decision-semantics.md) defines the governing Decision semantics.
 
 ### P3 — Work-level identity
 
@@ -70,7 +70,7 @@ A locked Decision cannot be replaced by a scan, import, rule, Provider, or Candi
 
 ### P5 — Append-only history
 
-A previous Decision is never silently erased. Every change creates a new HistoryEvent and, when replacement occurs, a new Decision linked to the previous one.
+A previous Decision is never silently erased. Every change creates a new HistoryEvent and, when replacement occurs, a new Decision linked to the previous one. Immutability, Applicability, and supersession follow [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
 
 ### P6 — Derived output
 
@@ -98,7 +98,7 @@ Relationships between Works belong to the Guardian domain model, not to the proj
 | `EpisodeDescriptor` | Season, episode, and local title inferred from a file |
 | `ProviderIdentity` | Provider, media type, and official identifier |
 | `Candidate` | Unvalidated possible match |
-| `Decision` | Validated choice connecting a SourceWork to an identity |
+| `Decision` | Explicit human-validated editorial choice governed by ADR-011 |
 | `Lock` | Functional protection of a Decision |
 | `HistoryEvent` | Timestamped record of an action or change |
 | `GeneratedItem` | Item created in the Projection |
@@ -123,7 +123,13 @@ Relationships between Works belong to the Guardian domain model, not to the proj
 - **Provider** — optional adapter to an external source of identities and minimal metadata.
 - **Candidate** — unvalidated possible match connecting a SourceWork to a potential ProviderIdentity.
 - **ProviderIdentity** — minimal normalized official identity supplied by a Provider.
-- **Decision** — validated choice connecting a SourceWork to a ProviderIdentity.
+
+### Editorial concepts
+
+- **Accepted correspondence** — editorially accepted semantic connection between a SourceWork and a Work; see [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
+- **Decision** — explicit human-validated editorial choice; its semantics are defined by [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
+- **Applicability** — rule determining which Decisions contribute to current Knowledge; see [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
+- **Knowledge** — current trusted editorial understanding derived from applicable Decisions; see [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
 - **Lock** — functional protection preventing automatic replacement of a Decision.
 - **HistoryEvent** — append-only record of an action or significant change.
 

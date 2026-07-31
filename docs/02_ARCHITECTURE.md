@@ -157,6 +157,10 @@ Validation
 Decision + HistoryEvent
 ```
 
+The semantic boundaries among validation, Decision, HistoryEvent, Applicability, and current Knowledge are defined by [ADR-011](adr/ADR-011-editorial-decision-semantics.md).
+
+An accepted correspondence between a SourceWork and a Work is domain meaning under ADR-011. Provider references may support it but do not establish it without explicit validation.
+
 ## Build pipeline
 
 ```text
@@ -224,4 +228,5 @@ Every log must exclude secrets and support path anonymization for diagnostic rep
 - no direct SQLite access from the interface;
 - no Provider call from the Domain;
 - no Decision mutation outside the dedicated service;
+- as a consequence of ADR-011, no automatic process exercises editorial authority;
 - no Build from an unvalidated Candidate.
