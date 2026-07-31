@@ -6,4 +6,5 @@ public sealed record IdentityValidationHistoryEvent(
     SourceWorkId SourceWorkId,
     CandidateId CandidateId,
     string ActorId,
-    DateTimeOffset OccurredAt);
+    DateTimeOffset OccurredAt,
+    DecisionId? SupersededDecisionId = null);

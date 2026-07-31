@@ -13,7 +13,8 @@ public sealed class IdentityDecision
         CandidateId candidateId,
         EditorialAuthority authority,
         DateTimeOffset decidedAt,
-        ProviderIdentity? providerEvidence)
+        ProviderIdentity? providerEvidence,
+        DecisionId? supersedesDecisionId = null)
     {
         Id = id;
         SourceWorkId = sourceWorkId;
@@ -22,6 +23,7 @@ public sealed class IdentityDecision
         Authority = authority;
         DecidedAt = decidedAt;
         ProviderEvidence = providerEvidence;
+        SupersedesDecisionId = supersedesDecisionId;
     }
 
     public DecisionId Id { get; }
@@ -37,4 +39,6 @@ public sealed class IdentityDecision
     public DateTimeOffset DecidedAt { get; }
 
     public ProviderIdentity? ProviderEvidence { get; }
+
+    public DecisionId? SupersedesDecisionId { get; }
 }

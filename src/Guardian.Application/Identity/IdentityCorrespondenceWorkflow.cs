@@ -116,10 +116,122 @@ public sealed class IdentityCorrespondenceWorkflow
             evaluation.Knowledge);
     }
 
+    public IdentityRevisionResult Revise(IdentityRevisionRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        AcceptedCorrespondenceKnowledge currentKnowledge = GetKnowledge(request.SourceWorkId);
+
+        if (!sourceWorks.ContainsKey(request.SourceWorkId))
+        {
+            return RevisionRejected(IdentityRevisionFailure.SourceWorkNotFound, currentKnowledge);
+        }
+
+        if (!candidates.TryGetValue(request.CandidateId, out IdentityCandidate? candidate))
+        {
+            return RevisionRejected(IdentityRevisionFailure.CandidateNotFound, currentKnowledge);
+        }
+
+        if (candidate.SourceWorkId != request.SourceWorkId)
+        {
+            return RevisionRejected(IdentityRevisionFailure.CandidateSourceWorkMismatch, currentKnowledge);
+        }
+
+        if (candidate.WorkId == default)
+        {
+            return RevisionRejected(IdentityRevisionFailure.CandidateDoesNotIdentifyWork, currentKnowledge);
+        }
+
+        if (request.Authority is null || string.IsNullOrWhiteSpace(request.Authority.ActorId))
+        {
+            return RevisionRejected(IdentityRevisionFailure.InvalidAuthority, currentKnowledge);
+        }
+
+        if (request.DecisionCategory != IdentityDecision.Category)
+        {
+            return RevisionRejected(IdentityRevisionFailure.DecisionCategoryMismatch, currentKnowledge);
+        }
+
+        if (request.DecisionScope != IdentityDecision.Scope)
+        {
+            return RevisionRejected(IdentityRevisionFailure.DecisionScopeMismatch, currentKnowledge);
+        }
+
+        IdentityDecision[] applicable = CurrentApplicableDecisions(request.SourceWorkId).ToArray();
+
+        if (applicable.Length == 0)
+        {
+            return new IdentityRevisionResult(
+                IdentityRevisionStatus.RequiresCoherentCurrentDecision,
+                IdentityRevisionFailure.NoCurrentCorrespondence,
+                null,
+                null,
+                currentKnowledge);
+        }
+
+        if (applicable.Length != 1)
+        {
+            return new IdentityRevisionResult(
+                IdentityRevisionStatus.RequiresCoherentCurrentDecision,
+                IdentityRevisionFailure.None,
+                null,
+                null,
+                currentKnowledge);
+        }
+
+        IdentityDecision currentDecision = applicable[0];
+
+        if (currentDecision.Id != request.CurrentDecisionId)
+        {
+            return RevisionRejected(IdentityRevisionFailure.SupersededDecisionNotApplicable, currentKnowledge, currentDecision);
+        }
+
+        if (candidate.WorkId == currentDecision.AcceptedWorkId)
+        {
+            return new IdentityRevisionResult(
+                IdentityRevisionStatus.NoChange,
+                IdentityRevisionFailure.None,
+                currentDecision,
+                null,
+                currentKnowledge);
+        }
+
+        if (request.IsCurrentDecisionLocked)
+        {
+            return new IdentityRevisionResult(
+                IdentityRevisionStatus.Locked,
+                IdentityRevisionFailure.None,
+                currentDecision,
+                null,
+                currentKnowledge);
+        }
+
+        InitialIdentityValidationRecords records = InitialIdentityValidation.Revise(
+            candidate,
+            currentDecision,
+            request.Authority,
+            nextDecisionId(),
+            nextHistoryEventId(),
+            currentTime());
+
+        Record(records);
+
+        AcceptedCorrespondenceEvaluation evaluation = EvaluateKnowledge(request.SourceWorkId);
+
+        return new IdentityRevisionResult(
+            IdentityRevisionStatus.Revised,
+            IdentityRevisionFailure.None,
+            records.Decision,
+            records.HistoryEvent,
+            evaluation.Knowledge);
+    }
+
     private IEnumerable<IdentityDecision> CurrentApplicableDecisions(SourceWorkId sourceWorkId) =>
         validationRecords
             .Select(records => records.Decision)
-            .Where(decision => decision.SourceWorkId == sourceWorkId);
+            .Where(decision => decision.SourceWorkId == sourceWorkId)
+            .Where(decision => !validationRecords.Any(
+                other => other.Decision.SupersedesDecisionId == decision.Id));
 
     private void Record(InitialIdentityValidationRecords records)
     {
@@ -149,4 +261,10 @@ public sealed class IdentityCorrespondenceWorkflow
         IdentityValidationFailure failure,
         AcceptedCorrespondenceKnowledge knowledge) =>
         new(IdentityValidationStatus.Rejected, failure, null, null, knowledge);
+
+    private static IdentityRevisionResult RevisionRejected(
+        IdentityRevisionFailure failure,
+        AcceptedCorrespondenceKnowledge knowledge,
+        IdentityDecision? decision = null) =>
+        new(IdentityRevisionStatus.Rejected, failure, decision, null, knowledge);
 }

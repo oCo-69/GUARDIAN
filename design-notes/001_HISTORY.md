@@ -179,3 +179,29 @@ Domain v0.1 Increment A is complete and ready for atomic acceptance preparation.
 ### Closing commit
 
 9104615ad05c9fe75caafb7bd4233f5194a02d65
+
+## Domain v0.1 Increment B Implementation
+
+### Date
+
+2026-08-01
+
+### Context
+
+Increment B completed the bounded Identity Correspondence specialization by adding explicit supersession without changing prior Decisions or HistoryEvents.
+
+### Hypotheses explored
+
+The implementation verified Decision B supersession, external Applicability, Known A to Known B revision, lock rejection, exact-repeat no-op behavior, effect-free failures, and preservation of Increment A.
+
+### Conclusion or retained decision
+
+Identity Correspondence is closed for the current phase. Further identity implementation, persistence, integrations, generalized lifecycle semantics, and Provider-reference work remain deferred. The next product direction is a separately authorized operational cross-module slice.
+
+### Authoritative reference
+
+[ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md) and [ADR-012 — Knowledge Semantics](../docs/adr/ADR-012-knowledge-semantics.md)
+
+### Closing commit
+
+Pending

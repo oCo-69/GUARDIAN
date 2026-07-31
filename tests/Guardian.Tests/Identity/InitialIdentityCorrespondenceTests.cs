@@ -12,7 +12,9 @@ public sealed class InitialIdentityCorrespondenceTests
     private static readonly CandidateId CandidateId = new(new Guid("30000000-0000-0000-0000-000000000001"));
     private static readonly CandidateId OtherCandidateId = new(new Guid("30000000-0000-0000-0000-000000000002"));
     private static readonly DecisionId DecisionId = new(new Guid("40000000-0000-0000-0000-000000000001"));
+    private static readonly DecisionId RevisionDecisionId = new(new Guid("40000000-0000-0000-0000-000000000002"));
     private static readonly HistoryEventId EventId = new(new Guid("50000000-0000-0000-0000-000000000001"));
+    private static readonly HistoryEventId RevisionEventId = new(new Guid("50000000-0000-0000-0000-000000000002"));
     private static readonly DateTimeOffset ValidationTime = new(2026, 7, 31, 12, 0, 0, TimeSpan.Zero);
     private static readonly ProviderIdentity ProviderEvidence = new("TMDb", "Series", "42");
     private static readonly EditorialAuthority Authority = new("human-reviewer");
@@ -352,6 +354,197 @@ public sealed class InitialIdentityCorrespondenceTests
         Assert.False(workflow.GetKnowledge(OtherSourceId).IsKnown);
     }
 
+    [Fact]
+    public void UnlockedRevisionMovesKnowledgeAndRetainsBothHistoricalPairs()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, ProviderEvidence);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(revisionCandidate);
+        IdentityValidationResult initial = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority));
+        IdentityDecision decisionA = initial.Decision!;
+        IdentityValidationHistoryEvent eventA = initial.HistoryEvent!;
+
+        IdentityRevisionResult revision = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false));
+
+        Assert.Equal(IdentityRevisionStatus.Revised, revision.Status);
+        IdentityDecision decisionB = Assert.Single(workflow.Decisions.Where(d => d.Id != decisionA.Id));
+        IdentityValidationHistoryEvent eventB = Assert.Single(workflow.HistoryEvents.Where(e => e.Id != eventA.Id));
+        Assert.Equal(decisionA.Id, decisionB.SupersedesDecisionId);
+        Assert.Equal(decisionA.Id, eventB.SupersededDecisionId);
+        Assert.Equal(OtherWorkId, decisionB.AcceptedWorkId);
+        Assert.Equal(OtherWorkId, revision.Knowledge.AcceptedWorkId);
+        Assert.Equal(decisionB.Id, revision.Knowledge.SupportingDecisionId);
+        Assert.Equal(2, workflow.Decisions.Count);
+        Assert.Equal(2, workflow.HistoryEvents.Count);
+        Assert.Equal(decisionA, workflow.Decisions.Single(d => d.Id == decisionA.Id));
+        Assert.Equal(eventA, workflow.HistoryEvents.Single(e => e.Id == eventA.Id));
+        Assert.Equal(decisionB.Id, workflow.EvaluateKnowledge(SourceId).Knowledge.SupportingDecisionId);
+    }
+
+    [Fact]
+    public void LockedRevisionHasNoEffects()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(revisionCandidate);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        IdentityRevisionResult result = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, true));
+
+        Assert.Equal(IdentityRevisionStatus.Locked, result.Status);
+        Assert.Single(workflow.Decisions);
+        Assert.Single(workflow.HistoryEvents);
+        Assert.Equal(WorkId, workflow.GetKnowledge(SourceId).AcceptedWorkId);
+    }
+
+    [Fact]
+    public void SameWorkRevisionIsNoChangeEvenWhenProviderEvidenceDiffers()
+    {
+        IdentityCandidate sameWork = new(OtherCandidateId, SourceId, WorkId, new ProviderIdentity("TMDb", "Series", "999"));
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(sameWork);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        IdentityRevisionResult result = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false));
+
+        Assert.Equal(IdentityRevisionStatus.NoChange, result.Status);
+        Assert.Single(workflow.Decisions);
+        Assert.Single(workflow.HistoryEvents);
+        Assert.Equal(WorkId, result.Knowledge.AcceptedWorkId);
+    }
+
+    [Fact]
+    public void RevisionRejectsWrongSubjectCategoryScopeAndCurrentDecision()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(revisionCandidate);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        IdentityRevisionResult wrongCategory = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false, "Relationship", IdentityDecision.Scope));
+        IdentityRevisionResult wrongScope = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false, IdentityDecision.Category, "OtherScope"));
+        IdentityRevisionResult wrongCurrent = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, RevisionDecisionId, Authority, false));
+
+        Assert.Equal(IdentityRevisionFailure.DecisionCategoryMismatch, wrongCategory.Failure);
+        Assert.Equal(IdentityRevisionFailure.DecisionScopeMismatch, wrongScope.Failure);
+        Assert.Equal(IdentityRevisionFailure.SupersededDecisionNotApplicable, wrongCurrent.Failure);
+        Assert.Single(workflow.Decisions);
+        Assert.Single(workflow.HistoryEvents);
+    }
+
+    [Fact]
+    public void RevisionWithoutCurrentDecisionOrWithInvalidAuthorityHasNoEffects()
+    {
+        IdentityCandidate candidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(candidate);
+
+        IdentityRevisionResult noCurrent = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, DecisionId, Authority, false));
+        IdentityRevisionResult invalidAuthority = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, DecisionId, null, false));
+
+        Assert.Equal(IdentityRevisionFailure.NoCurrentCorrespondence, noCurrent.Failure);
+        Assert.Equal(IdentityRevisionFailure.InvalidAuthority, invalidAuthority.Failure);
+        Assert.Empty(workflow.Decisions);
+        Assert.Empty(workflow.HistoryEvents);
+    }
+
+    [Fact]
+    public void RevisionRejectsCandidateForAnotherSourceOrWithoutWork()
+    {
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(
+            new IdentityCandidate(OtherCandidateId, OtherSourceId, OtherWorkId, null));
+        IdentityRevisionResult wrongSource = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, DecisionId, Authority, false));
+
+        IdentityCorrespondenceWorkflow missingWorkWorkflow = CreateRevisionWorkflow(
+            new IdentityCandidate(OtherCandidateId, SourceId, default, null));
+        IdentityDecision decisionA = missingWorkWorkflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+        IdentityRevisionResult missingWork = missingWorkWorkflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false));
+
+        Assert.Equal(IdentityRevisionFailure.CandidateSourceWorkMismatch, wrongSource.Failure);
+        Assert.Equal(IdentityRevisionFailure.CandidateDoesNotIdentifyWork, missingWork.Failure);
+        Assert.Empty(workflow.Decisions);
+        Assert.Single(missingWorkWorkflow.Decisions);
+        Assert.Single(missingWorkWorkflow.HistoryEvents);
+    }
+
+    [Fact]
+    public void RevisionWithDifferentWorkAndIdenticalProviderEvidenceStillRevises()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, ProviderEvidence);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(revisionCandidate);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        IdentityRevisionResult result = workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false));
+
+        Assert.Equal(IdentityRevisionStatus.Revised, result.Status);
+        Assert.Equal(OtherWorkId, result.Knowledge.AcceptedWorkId);
+    }
+
+    [Fact]
+    public void RevisionHistoryRemainsIndependentOfRecordOrder()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = CreateRevisionWorkflow(revisionCandidate);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+        workflow.Revise(new IdentityRevisionRequest(SourceId, OtherCandidateId, decisionA.Id, Authority, false));
+
+        IdentityDecision[] reversed = workflow.Decisions.Reverse().ToArray();
+        AcceptedCorrespondenceEvaluation evaluation = AcceptedCorrespondenceEvaluator.Evaluate(SourceId, [reversed[0]]);
+
+        Assert.True(evaluation.Knowledge.IsKnown);
+        Assert.Equal(OtherWorkId, evaluation.Knowledge.AcceptedWorkId);
+        Assert.Equal(workflow.GetKnowledge(SourceId), evaluation.Knowledge);
+    }
+
+    [Fact]
+    public void DuplicateRevisionIdsDoNotLeavePartialState()
+    {
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = new(
+            [new SourceWork(SourceId)],
+            [new IdentityCandidate(CandidateId, SourceId, WorkId, null), revisionCandidate],
+            () => DecisionId,
+            () => EventId,
+            () => ValidationTime);
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        Assert.Throws<InvalidOperationException>(() => workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false)));
+        Assert.Single(workflow.Decisions);
+        Assert.Single(workflow.HistoryEvents);
+        Assert.Equal(WorkId, workflow.GetKnowledge(SourceId).AcceptedWorkId);
+    }
+
+    [Fact]
+    public void DuplicateRevisionHistoryEventIdDoesNotLeaveDecisionB()
+    {
+        bool decisionGenerated = false;
+        IdentityCandidate revisionCandidate = new(OtherCandidateId, SourceId, OtherWorkId, null);
+        IdentityCorrespondenceWorkflow workflow = new(
+            [new SourceWork(SourceId)],
+            [new IdentityCandidate(CandidateId, SourceId, WorkId, null), revisionCandidate],
+            () => decisionGenerated ? RevisionDecisionId : DecisionId,
+            () => EventId,
+            () =>
+            {
+                decisionGenerated = true;
+                return ValidationTime;
+            });
+        IdentityDecision decisionA = workflow.Validate(new IdentityValidationRequest(SourceId, CandidateId, Authority)).Decision!;
+
+        Assert.Throws<InvalidOperationException>(() => workflow.Revise(new IdentityRevisionRequest(
+            SourceId, OtherCandidateId, decisionA.Id, Authority, false)));
+        Assert.Single(workflow.Decisions);
+        Assert.Single(workflow.HistoryEvents);
+        Assert.Equal(WorkId, workflow.GetKnowledge(SourceId).AcceptedWorkId);
+    }
+
     private static IdentityCorrespondenceWorkflow CreateWorkflow(
         IdentityCandidate? candidate = null,
         IdentityCandidate? additionalCandidate = null)
@@ -372,6 +565,24 @@ public sealed class InitialIdentityCorrespondenceTests
             () => DecisionId,
             () => EventId,
             () => ValidationTime);
+    }
+
+    private static IdentityCorrespondenceWorkflow CreateRevisionWorkflow(IdentityCandidate revisionCandidate)
+    {
+        bool decisionGenerated = false;
+        bool eventGenerated = false;
+
+        return new IdentityCorrespondenceWorkflow(
+            [new SourceWork(SourceId)],
+            [new IdentityCandidate(CandidateId, SourceId, WorkId, ProviderEvidence), revisionCandidate],
+            () => decisionGenerated ? RevisionDecisionId : DecisionId,
+            () => eventGenerated ? RevisionEventId : EventId,
+            () =>
+            {
+                decisionGenerated = true;
+                eventGenerated = true;
+                return ValidationTime;
+            });
     }
 
     private static void AssertRejectedWithoutRecords(

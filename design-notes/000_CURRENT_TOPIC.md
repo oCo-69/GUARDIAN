@@ -4,10 +4,8 @@
 
 **Authority:** Non-normative
 
-## State
+The bounded Domain v0.1 Identity Correspondence specialization is closed for the current phase. Increment A established the initial SourceWork-to-Work correspondence, and Increment B implemented its bounded supersession behavior.
 
-Domain v0.1 Increment A — Initial Identity Correspondence Establishment has completed its implementation review and is ready for atomic acceptance preparation.
+Further identity implementation is paused. Persistence, rehydration, durable locking, generalized lifecycle semantics, Provider-reference generalization, and integrations remain deferred.
 
-The implementation remains limited to the approved in-memory Domain and Application behavior. Increment B, persistence, integrations, and further normative workstreams remain deferred and are not open design topics.
-
-The next topic will be opened explicitly when the project owner authorizes further work.
+The next product direction is a first operational cross-module slice combining Core observation, Provider Candidates, explicit validation, and reconstructible Jellyfin projection. That phase is not open until separately authorized.
