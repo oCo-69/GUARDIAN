@@ -46,4 +46,4 @@ The normative source and Decision Index entry must be introduced in the same doc
 - Status: Validated
 - Consequence: Editorial authority, immutable Decisions, Applicability, supersession, HistoryEvent distinction, and accepted correspondence now share one normative semantic foundation.
 - Authoritative reference: [ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md)
-- Related commit: Pending
+- Related commit: 6e960ec78b0b8d1c849a0c30535824f5681f6c63

@@ -70,7 +70,7 @@ None. This closure is a non-normative process milestone.
 
 ### Closing commit
 
-Pending
+6e960ec78b0b8d1c849a0c30535824f5681f6c63
 
 ## Decision Semantics Impact Mapping and ADR Preparation
 
@@ -98,4 +98,4 @@ ADR-011 was prepared and explicitly accepted together with coordinated Blueprint
 
 ### Closing commit
 
-Pending
+6e960ec78b0b8d1c849a0c30535824f5681f6c63
