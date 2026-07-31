@@ -99,3 +99,57 @@ ADR-011 was prepared and explicitly accepted together with coordinated Blueprint
 ### Closing commit
 
 6e960ec78b0b8d1c849a0c30535824f5681f6c63
+
+## ADR-011 Lifecycle Closure and Knowledge Semantics Transition
+
+### Date
+
+2026-07-31
+
+### Context
+
+ADR-011 and DEC-0001 completed their normative and repository lifecycle, including reconciliation of their publication metadata.
+
+### Hypotheses explored
+
+None. This entry records a lifecycle transition rather than a new conceptual exploration.
+
+### Conclusion or retained decision
+
+Editorial Decision Semantics is closed under ADR-011. Knowledge Semantics becomes the next authorized non-normative workstream. No Knowledge rule is made normative by this transition.
+
+### Authoritative reference
+
+[ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md)
+
+### Closing commit
+
+2ed0a0005af3f7fbc90612db8f48b109787f3e48
+
+## Knowledge Semantics Analysis and ADR Preparation
+
+### Date
+
+2026-07-31
+
+### Context
+
+ADR-011 established applicable Decisions as the authoritative inputs to current Knowledge but intentionally deferred complete Knowledge semantics.
+
+### Hypotheses explored
+
+The work examined canonical absence, conflict, unsupported material, accepted correspondence, reconstructibility, joint contribution by compatible Decisions, authority ownership, and representation independence.
+
+### Conclusion or retained decision
+
+Knowledge is current trusted editorial understanding determined by coherent applicable Decisions. It never owns editorial authority, has exactly the `Known` and `Unknown` semantic states, remains representation-independent, and excludes Conflict, Unsupported, and reconstructibility from its semantics.
+
+ADR-012 was prepared with coordinated minimal Blueprint and Architecture references. Database documentation remains unchanged because no persistence obligation was introduced.
+
+### Authoritative reference
+
+[ADR-012 — Knowledge Semantics](../docs/adr/ADR-012-knowledge-semantics.md)
+
+### Closing commit
+
+Pending

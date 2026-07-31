@@ -161,6 +161,8 @@ The semantic boundaries among validation, Decision, HistoryEvent, Applicability,
 
 An accepted correspondence between a SourceWork and a Work is domain meaning under ADR-011. Provider references may support it but do not establish it without explicit validation.
 
+Knowledge meaning and the rule that editorial authority resides exclusively in applicable Decisions are defined by [ADR-012](adr/ADR-012-knowledge-semantics.md). Architecture does not define or require a Knowledge representation.
+
 ## Build pipeline
 
 ```text

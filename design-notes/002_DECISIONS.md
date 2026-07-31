@@ -47,3 +47,11 @@ The normative source and Decision Index entry must be introduced in the same doc
 - Consequence: Editorial authority, immutable Decisions, Applicability, supersession, HistoryEvent distinction, and accepted correspondence now share one normative semantic foundation.
 - Authoritative reference: [ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md)
 - Related commit: 6e960ec78b0b8d1c849a0c30535824f5681f6c63
+
+## DEC-0002 — Knowledge Semantics
+
+- Date: 2026-07-31
+- Status: Validated
+- Consequence: Knowledge now has one representation-independent semantic foundation derived exclusively from applicable Decisions, with `Known` and `Unknown` as its only states.
+- Authoritative reference: [ADR-012 — Knowledge Semantics](../docs/adr/ADR-012-knowledge-semantics.md)
+- Related commit: Pending

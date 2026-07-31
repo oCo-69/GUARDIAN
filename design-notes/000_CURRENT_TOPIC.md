@@ -6,6 +6,6 @@
 
 ## State
 
-ADR-011 and its coordinated authoritative changes form the current acceptance package.
+ADR-012 and its coordinated authoritative changes form the current acceptance package.
 
 No subsequent ADR or design topic has been opened.
