@@ -142,53 +142,85 @@ The final report states:
 - working-tree state;
 - whether a commit or push occurred.
 
-## 13. Response protocol
+## 13. Repository-aware collaboration protocol
 
-Discussion with the user may take place in French. The repository-facing language rule in [Documentation maintenance](#9-documentation-maintenance) always remains in force.
+Discussion with the user may take place in French. Every repository-facing artifact remains in English according to [Documentation maintenance](#9-documentation-maintenance).
 
-Every substantive response uses the following sections in this order:
+This protocol governs collaboration only. It does not define Guardian's product, domain, architecture, persistence, development standards, or normative decisions.
 
-1. `ARCHITECT REVIEW`
-2. `EXECUTION SUMMARY`
-3. `RESPONSE PROMPT`, only when a reply from ChatGPT is needed
+### Architectural roles
 
-### ARCHITECT REVIEW
+The collaboration uses three roles:
 
-This section contains exactly these subsections:
+- **Human Architect / Product Owner** owns product intent, validates normative decisions, and authorizes publication or destructive operations;
+- **Architectural Reviewer** independently reviews the canonical project repository, architecture, semantics, ADR consistency, and acceptance readiness;
+- **Implementation Agent** implements approved changes, runs technical validation, and preserves repository boundaries.
 
-- `Reasoning to review:` summarizes only important reasoning, trade-offs, assumptions, rejected alternatives, and why the selected approach was preferred;
-- `Potential weaknesses:` identifies unresolved risks, fragile assumptions, possible inconsistencies, and potential conflicts with Guardian's vision, domain language, architecture, or documentation authority; it states `None identified` when appropriate;
-- `Questions for ChatGPT:` contains only questions requiring conceptual, architectural, editorial, or domain review; it states `None` when no review is needed.
+ChatGPT is the current implementation of the Architectural Reviewer role. Codex is the current implementation of the Implementation Agent role. These tools do not acquire authority beyond their assigned roles.
 
-Routine execution details do not belong in `ARCHITECT REVIEW`.
+### Review responsibilities
 
-### EXECUTION SUMMARY
+The roles distinguish the following reviews:
 
-This section provides concise factual evidence:
+- **Implementation Review** evaluates code, tests, behavior, and technical boundaries;
+- **Architectural Review** evaluates responsibilities, dependencies, invariants, and compatibility;
+- **Normative Review** evaluates ADRs and authoritative document consistency;
+- **Acceptance Review** evaluates whether a coordinated repository change is ready for approval;
+- **Lifecycle Review** evaluates design-note closure, decision indexing, and publication metadata.
 
-- files created, modified, moved, or deleted;
-- commands and checks performed;
-- validation results;
-- commit and push status when applicable.
+The Human Architect / Product Owner remains the authority for normative acceptance. The Architectural Reviewer does not replace that authority.
 
-Command results and checks are reported execution evidence. They must not be presented as independently verified by ChatGPT.
+### Canonical repository access
 
-Long raw logs, full command transcripts, and very large diffs are omitted unless the user explicitly requests them. When approval requires a diff or complete file content, it is presented separately and completely without expanding `ARCHITECT REVIEW`.
+The Architectural Reviewer may independently inspect the canonical project repository, including:
 
-### RESPONSE PROMPT
+- repository structure and implementation;
+- the Blueprint and technical references;
+- accepted ADRs;
+- design-notes;
+- tests and repository metadata.
 
-This section is included only when a reply from ChatGPT is needed.
+Because this evidence is independently inspectable, the Implementation Agent should explain architectural reasoning, consequences, trade-offs, and risks rather than duplicate long repository listings or raw command output.
 
-It:
+### Standard report structure
 
-- is the final section of the response;
-- contains one fenced `text` block and no other content;
-- contains only the exact message intended for ChatGPT;
-- preserves reasoning, reservations, decisions, unresolved questions, and concise execution results needed for the next architectural or editorial review;
-- excludes greetings, user commentary, raw logs, routine details, and redundant information;
-- has no text after the fenced block.
+Substantive reports use this structure:
 
-When no reply from ChatGPT is needed, the entire `RESPONSE PROMPT` section is omitted.
+```text
+REVIEW TYPE
+
+CONTEXT
+
+ARCHITECT REVIEW
+
+Architectural impact
+Reasoning to review
+Potential weaknesses
+Questions for ChatGPT
+
+ARCHITECTURAL CONFIDENCE
+
+EXECUTION SUMMARY
+
+RESPONSE PROMPT
+```
+
+`REVIEW TYPE` identifies the review category. `CONTEXT` states the bounded subject. `ARCHITECT REVIEW` focuses on architecture rather than repository description. `ARCHITECTURAL CONFIDENCE` is `High`, `Medium`, or `Low`, with a concise justification. `EXECUTION SUMMARY` reports factual execution evidence.
+
+The `RESPONSE PROMPT` is included only when an architectural or editorial decision is required. It requests a decision rather than repeating repository inspection.
+
+### Reporting principles
+
+- reasoning has priority over repository description;
+- architectural consequences have priority over implementation detail;
+- repository evidence is expanded only for commit preparation, acceptance packages, failure investigations, or explicit requests;
+- routine repository evidence is summarized because the Architectural Reviewer can inspect it independently.
+
+### Evidence and authority
+
+Complete technical evidence is required when preparing a commit, acceptance package, or failure investigation. Concise summaries are preferred for ordinary reviews.
+
+The canonical project repository is the shared source of truth. A conversational statement becomes authoritative only after the Human Architect / Product Owner approves it and it is promoted into the appropriate repository document.
 
 ## 14. Uncertainty
 

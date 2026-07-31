@@ -93,7 +93,7 @@ Commits should remain focused on one stabilized topic.
 The collaboration uses a symmetric copy boundary:
 
 - a message intended for Codex ends with `PROMPT FOR CODEX`;
-- Codex responses follow the authoritative [response protocol](../docs/00_CODEX_GUIDELINES.md#13-response-protocol);
+- Codex responses follow the authoritative [repository-aware collaboration protocol](../docs/00_CODEX_GUIDELINES.md#13-repository-aware-collaboration-protocol);
 - when a response from ChatGPT is needed, the final `RESPONSE PROMPT` block is the only text that needs to be copied.
 
 This exchange convention controls conversation handoff only. It does not create or validate a project decision.
