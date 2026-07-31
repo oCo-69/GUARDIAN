@@ -1,8 +1,9 @@
 # Design TODO
 
-## Current state
+## Deferred next work
 
-ADR-012 is the active acceptance package. No next ADR is open.
+- Keep Domain v0.1 Increment B — explicit supersession — deferred until separately authorized.
+- Do not begin persistence, Provider integrations, Jellyfin projection, filesystem scanning, or UI work as part of Increment A.
 
 ## Deferred normative workstreams
 
@@ -10,4 +11,4 @@ ADR-012 is the active acceptance package. No next ADR is open.
 - Observation provenance and retention.
 - Projection semantics.
 
-These workstreams remain deferred and do not authorize drafting or implementation.
+These workstreams remain deferred. No ADR drafting or implementation is authorized by this lifecycle closure.

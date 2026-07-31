@@ -153,3 +153,29 @@ ADR-012 was prepared with coordinated minimal Blueprint and Architecture referen
 ### Closing commit
 
 1b24628f3235253edd52b6591be0b058b651089a
+
+## Domain v0.1 Increment A Implementation Review
+
+### Date
+
+2026-07-31
+
+### Context
+
+The accepted ADR-011 and ADR-012 semantics required a first bounded behavioral implementation before persistence and integrations.
+
+### Hypotheses explored
+
+The implementation tested initial SourceWork-to-Work correspondence establishment, explicit human validation, external Applicability, Known and Unknown evaluation, Decision and HistoryEvent separation, defensive in-memory retention, providerless validation, exact-repeat no-op behavior, and the deferred supersession boundary.
+
+### Conclusion or retained decision
+
+Domain v0.1 Increment A is complete and ready for atomic acceptance preparation. The implementation remains independent of persistence, Providers, Jellyfin, Projection, filesystem scanning, and UI. Increment B remains deferred and no new normative decision was introduced.
+
+### Authoritative reference
+
+[ADR-011 — Editorial Decision Semantics](../docs/adr/ADR-011-editorial-decision-semantics.md) and [ADR-012 — Knowledge Semantics](../docs/adr/ADR-012-knowledge-semantics.md)
+
+### Closing commit
+
+Pending
