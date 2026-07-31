@@ -16,14 +16,14 @@
 #### Goal
 Create the project skeleton.
 
-- [ ] Create `Guardian.sln`
-- [ ] Create `Guardian.Domain`
-- [ ] Create `Guardian.Application`
-- [ ] Create `Guardian.Infrastructure`
-- [ ] Create `Guardian.Jellyfin`
-- [ ] Create `Guardian.Providers.Tmdb`
-- [ ] Create `Guardian.Desktop`
-- [ ] Create `Guardian.Tests`
+- [x] Create `Guardian.sln`
+- [x] Create `Guardian.Domain`
+- [x] Create `Guardian.Application`
+- [x] Create `Guardian.Infrastructure`
+- [x] Create `Guardian.Jellyfin`
+- [x] Create `Guardian.Providers.Tmdb`
+- [x] Create `Guardian.Desktop`
+- [x] Create `Guardian.Tests`
 
 **Acceptance criteria**
 

@@ -8,6 +8,7 @@ Le format suit l’esprit de *Keep a Changelog* et le projet prévoit un version
 
 ### Added
 
+- squelette de solution .NET 8, projets initiaux, application WPF minimale et environnement de test xUnit ;
 - documentation active unifiée ;
 - manifeste consolidé ;
 - Blueprint v1 mis à jour avec TMDb comme fournisseur optionnel ;
