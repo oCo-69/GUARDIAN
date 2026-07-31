@@ -152,4 +152,4 @@ ADR-012 was prepared with coordinated minimal Blueprint and Architecture referen
 
 ### Closing commit
 
-Pending
+1b24628f3235253edd52b6591be0b058b651089a

@@ -54,4 +54,4 @@ The normative source and Decision Index entry must be introduced in the same doc
 - Status: Validated
 - Consequence: Knowledge now has one representation-independent semantic foundation derived exclusively from applicable Decisions, with `Known` and `Unknown` as its only states.
 - Authoritative reference: [ADR-012 — Knowledge Semantics](../docs/adr/ADR-012-knowledge-semantics.md)
-- Related commit: Pending
+- Related commit: 1b24628f3235253edd52b6591be0b058b651089a
