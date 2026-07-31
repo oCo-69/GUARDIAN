@@ -219,6 +219,19 @@ These tasks are not assigned to a milestone. The [Roadmap](../ROADMAP.md) remain
 - [ ] Localization
 - [ ] Automatic updates
 
+### Cross-work relationships
+
+- [ ] Model relationships between works independently of source organization and target media libraries.
+- [ ] Discover and maintain relationships through provider metadata and explicit user decisions.
+- [ ] Persist these relationships as Guardian-owned knowledge.
+- [ ] Project applicable relationships automatically using the grouping capabilities of the target platform (Jellyfin Collections today).
+- [ ] Reconstruct these projected groupings after a target library is recreated.
+- [ ] Keep the relationship model independent of any target platform so that other projections remain possible.
+
+This capability is not assigned to a milestone. Its implementation must preserve the Blueprint invariants and accepted ADRs; no technical mechanism is selected by this backlog entry.
+
+Examples include narrative franchises, sagas, shared universes and other relationships between works. The Blueprint intentionally does not prescribe a domain model for these relationships. The appropriate domain concepts should emerge from real-world use cases rather than premature abstraction.
+
 **Invariant**
 
 Guardian may prepare and group hundreds of proposals for batch decision review. Each validation remains an explicit user action. Automatic or implicit validation is forbidden, as required by [ADR-003](adr/ADR-003-user-validation.md).

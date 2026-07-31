@@ -12,6 +12,8 @@ Toute fonctionnalité doit respecter les invariants, responsabilités et limites
 
 Guardian relie sans ambiguïté l’organisation locale d’une collection aux identités officielles des œuvres, puis construit une représentation que Jellyfin reconnaît correctement, sans toucher aux originaux.
 
+Guardian conserve également les relations métier définies entre plusieurs œuvres, quels que soient leur type (films, séries, OVA, spéciaux, etc.), leur emplacement source ou leur répartition entre bibliothèques. Cette connaissance reste indépendante de la plateforme cible afin de permettre sa reconstruction et d’autres formes de projection.
+
 Correspondances fondamentales :
 
 ```text
@@ -81,6 +83,10 @@ Guardian conserve les identités, décisions, verrous, scans, constructions et �
 ### P8 — Échec sûr
 
 En cas d’incertitude, Guardian isole le cas concerné et demande une décision. Il ne dégrade ni la source ni une projection valide existante.
+
+### P9 — Relations métier indépendantes
+
+Les relations entre les œuvres appartiennent au modèle métier Guardian et non à la plateforme de projection.
 
 ## 5. Modèle conceptuel
 
