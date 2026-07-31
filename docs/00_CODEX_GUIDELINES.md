@@ -96,7 +96,7 @@ The active documentation must remain limited and non-redundant.
 Codex must:
 
 - keep [`README.md`](README.md) usable as the documentation entry point;
-- write every repository document, source comment, and commit message directly in English;
+- write every repository-facing artifact directly in English, including documents, paths, headings, examples, commit messages, source comments, and generated deliverables;
 - use canonical domain terms from the [Blueprint glossary](01_BLUEPRINT.md#glossary) consistently and avoid synonyms for adopted concepts;
 - maintain links after moving or renaming files;
 - update `CHANGELOG.md` for notable changes;
@@ -142,6 +142,54 @@ The final report states:
 - working-tree state;
 - whether a commit or push occurred.
 
-## 13. Uncertainty
+## 13. Response protocol
+
+Discussion with the user may take place in French. The repository-facing language rule in [Documentation maintenance](#9-documentation-maintenance) always remains in force.
+
+Every substantive response uses the following sections in this order:
+
+1. `ARCHITECT REVIEW`
+2. `EXECUTION SUMMARY`
+3. `RESPONSE PROMPT`, only when a reply from ChatGPT is needed
+
+### ARCHITECT REVIEW
+
+This section contains exactly these subsections:
+
+- `Reasoning to review:` summarizes only important reasoning, trade-offs, assumptions, rejected alternatives, and why the selected approach was preferred;
+- `Potential weaknesses:` identifies unresolved risks, fragile assumptions, possible inconsistencies, and potential conflicts with Guardian's vision, domain language, architecture, or documentation authority; it states `None identified` when appropriate;
+- `Questions for ChatGPT:` contains only questions requiring conceptual, architectural, editorial, or domain review; it states `None` when no review is needed.
+
+Routine execution details do not belong in `ARCHITECT REVIEW`.
+
+### EXECUTION SUMMARY
+
+This section provides concise factual evidence:
+
+- files created, modified, moved, or deleted;
+- commands and checks performed;
+- validation results;
+- commit and push status when applicable.
+
+Command results and checks are reported execution evidence. They must not be presented as independently verified by ChatGPT.
+
+Long raw logs, full command transcripts, and very large diffs are omitted unless the user explicitly requests them. When approval requires a diff or complete file content, it is presented separately and completely without expanding `ARCHITECT REVIEW`.
+
+### RESPONSE PROMPT
+
+This section is included only when a reply from ChatGPT is needed.
+
+It:
+
+- is the final section of the response;
+- contains one fenced `text` block and no other content;
+- contains only the exact message intended for ChatGPT;
+- preserves reasoning, reservations, decisions, unresolved questions, and concise execution results needed for the next architectural or editorial review;
+- excludes greetings, user commentary, raw logs, routine details, and redundant information;
+- has no text after the fenced block.
+
+When no reply from ChatGPT is needed, the entire `RESPONSE PROMPT` section is omitted.
+
+## 14. Uncertainty
 
 When requirements are incomplete or conflicting, Codex preserves existing behavior, identifies the ambiguity, proposes the smallest safe options and requests a human decision.
