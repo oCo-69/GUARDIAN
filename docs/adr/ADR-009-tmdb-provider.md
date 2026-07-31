@@ -1,20 +1,20 @@
-# ADR-009 — TMDb est un fournisseur optionnel de candidats
+# ADR-009 — TMDb is an optional Candidate Provider
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Un accès TMDb est disponible et peut accélérer l’identification, mais Guardian doit rester utilisable sans lui.
+TMDb access is available and can accelerate identification, but Guardian must remain usable without it.
 
-## Décision
+## Decision
 
-TMDb est implémenté comme adaptateur optionnel. Il fournit des candidats et des métadonnées minimales. La validation reste manuelle.
+TMDb is implemented as an optional adapter. It supplies Candidates and minimal metadata. Validation remains manual.
 
-## Conséquences
+## Consequences
 
-- jeton stocké de façon sécurisée ;
-- solution de repli par navigateur et saisie directe ;
-- aucun couplage du domaine à TMDb ;
-- ajout futur d’autres fournisseurs possible.
+- token stored securely;
+- fallback through browser search and direct entry;
+- no Domain coupling to TMDb;
+- future Providers remain possible.

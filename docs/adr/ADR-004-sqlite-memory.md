@@ -1,19 +1,19 @@
-# ADR-004 — SQLite conserve la mémoire minimale
+# ADR-004 — SQLite preserves minimal memory
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Guardian doit persister les décisions sans maintenir une encyclopédie locale.
+Guardian must persist Decisions without maintaining a local encyclopedia.
 
-## Décision
+## Decision
 
-SQLite conserve les œuvres locales, identités minimales, décisions, verrous, événements, scans et constructions.
+SQLite preserves SourceWorks, minimal identities, Decisions, Locks, HistoryEvents, scans, and Builds.
 
-## Conséquences
+## Consequences
 
-- base légère et sauvegardable ;
-- schéma versionné ;
-- absence de duplication exhaustive des données fournisseur.
+- lightweight and backup-friendly database;
+- versioned schema;
+- no exhaustive duplication of Provider data.

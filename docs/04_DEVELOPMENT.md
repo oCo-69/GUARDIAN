@@ -1,21 +1,19 @@
-# Guide de développement
+# Development Guide
 
 > [Documentation](README.md) · [Blueprint](01_BLUEPRINT.md) · [ADR](adr/README.md)
 
-## Prérequis prévus
+## Prerequisites
 
-- Windows 11 ;
-- .NET SDK LTS retenu par le projet ;
-- Visual Studio ou un éditeur compatible .NET ;
-- Git ;
-- SQLite embarqué par l’application ;
-- compte TMDb facultatif pour tester le fournisseur.
+- Windows 11;
+- .NET 8 SDK selected by `global.json`;
+- Visual Studio or a .NET-compatible editor;
+- Git;
+- SQLite embedded by the application;
+- optional TMDb account for Provider testing.
 
-La version précise du SDK devra être fixée dans `global.json` au démarrage du code.
+## Repository layout
 
-## Démarrage du dépôt
-
-Structure attendue :
+Expected structure:
 
 ```text
 src/
@@ -25,47 +23,47 @@ docs/
 archives/
 ```
 
-Le code applicatif ne doit pas être placé à la racine.
+Application code must not be placed at the repository root.
 
-## Règle de contribution
+## Contribution rule
 
-Avant de développer une fonctionnalité :
+Before developing a feature:
 
-1. vérifier sa conformité au [Blueprint](01_BLUEPRINT.md) ;
-2. identifier les invariants concernés ;
-3. créer un ADR lorsqu’une décision d’architecture nouvelle est nécessaire ;
-4. écrire ou mettre à jour les tests ;
-5. implémenter ;
-6. vérifier qu’aucune écriture source n’est possible.
+1. verify compliance with the [Blueprint](01_BLUEPRINT.md);
+2. identify the affected invariants;
+3. create an ADR when a new architecture decision is required;
+4. write or update tests;
+5. implement;
+6. verify that no Source write is possible.
 
-## Qualité C#
+## C# quality
 
-- nullable reference types activés ;
-- warnings traités comme erreurs dans les projets principaux ;
-- analyseurs .NET activés ;
-- noms explicites ;
-- petites méthodes ;
-- dépendances injectées ;
-- interfaces aux frontières techniques ;
-- aucune logique métier dans le code-behind WPF ;
-- opérations d’entrée/sortie asynchrones ;
-- prise en charge de l’annulation ;
-- messages utilisateur séparés des détails techniques.
+- nullable reference types enabled;
+- warnings treated as errors in primary projects;
+- .NET analyzers enabled;
+- explicit names;
+- small methods;
+- injected dependencies;
+- interfaces at technical boundaries;
+- no domain logic in WPF code-behind;
+- asynchronous input/output operations;
+- cancellation support;
+- user-facing messages separated from technical details.
 
-## Tests minimaux
+## Minimum tests
 
-### Domaine
+### Domain
 
-- impossible de valider sans identité ;
-- impossible de construire depuis un candidat ;
-- impossible de remplacer une décision verrouillée ;
-- le déverrouillage crée un événement ;
-- une restauration crée une nouvelle décision ;
-- une suggestion ne modifie pas l’état validé.
+- validation without an identity is impossible;
+- building from a Candidate is impossible;
+- replacing a locked Decision is impossible;
+- unlocking creates a HistoryEvent;
+- restoration creates a new Decision;
+- a Candidate does not modify validated state.
 
 ### Parser
 
-Tests fondés sur les conventions réelles observées :
+Tests are based on observed real-world conventions:
 
 ```text
 [01x01]
@@ -76,56 +74,56 @@ Season 01
 [STEN]
 ```
 
-Le parser doit exposer son niveau de confiance et ne pas deviner lorsque les données sont contradictoires.
+The parser must expose its confidence level and must not guess when data conflicts.
 
-### Construction
+### Build
 
-- source et destination sur le même volume ;
-- volumes différents ;
-- collision de noms ;
-- destination inaccessible ;
-- lien existant ;
-- build annulé ;
-- build partiellement échoué ;
-- reconstruction déterministe ;
-- source inchangée avant et après.
+- Source and destination on the same volume;
+- different volumes;
+- name collision;
+- inaccessible destination;
+- existing link;
+- cancelled Build;
+- partially failed Build;
+- deterministic reconstruction;
+- unchanged Source before and after.
 
 ### SQLite
 
-- création de base ;
-- migrations successives ;
-- rollback sur erreur ;
-- décisions et historique préservés ;
-- sauvegarde et restauration.
+- database creation;
+- successive migrations;
+- rollback on error;
+- preserved Decisions and History;
+- backup and restore.
 
 ## Branches
 
-Organisation simple recommandée :
+Recommended simple organization:
 
-- `main` : état stable ou démontrable ;
-- branches courtes par fonctionnalité ;
-- pull request pour toute intégration notable.
+- `main`: stable or demonstrable state;
+- short-lived branches per feature;
+- pull request for every notable integration.
 
-Éviter une branche `develop` longue tant que l’équipe est réduite.
+Avoid a long-lived `develop` branch while the team remains small.
 
 ## Commits
 
-Format recommandé :
+Recommended format:
 
 ```text
 type(scope): description
 ```
 
-Exemples :
+Examples:
 
 ```text
 feat(scanner): add read-only source discovery
 fix(lock): reject automatic replacement of locked decisions
-docs(blueprint): clarify TMDb candidate workflow
+docs(blueprint): clarify TMDb Candidate workflow
 test(builder): cover cross-volume failure
 ```
 
-Types principaux :
+Primary types:
 
 - `feat`
 - `fix`
@@ -135,36 +133,38 @@ Types principaux :
 - `build`
 - `chore`
 
+Commit messages must be written in English.
+
 ## Pull requests
 
-Une pull request doit indiquer :
+A pull request must state:
 
-- problème traité ;
-- solution ;
-- invariants concernés ;
-- tests ajoutés ;
-- impact sur la base ;
-- impact sur la source ;
-- captures pour les changements d’interface ;
-- ADR associé, le cas échéant.
+- problem addressed;
+- solution;
+- affected invariants;
+- tests added;
+- database impact;
+- Source impact;
+- screenshots for interface changes;
+- associated ADR, when applicable.
 
-## Définition de terminé
+## Definition of done
 
-Une tâche est terminée lorsque :
+A task is complete when:
 
-- elle compile sans avertissement bloquant ;
-- les tests passent ;
-- la source est protégée par conception et par test ;
-- les erreurs sont compréhensibles ;
-- la documentation active reste cohérente ;
-- aucun secret n’est journalisé ;
-- le changement est essayable.
+- it builds without blocking warnings;
+- tests pass;
+- the Source is protected by design and by tests;
+- errors are understandable;
+- active documentation remains coherent;
+- no secret is logged;
+- the change is testable.
 
-## Versionnage
+## Versioning
 
-Le projet utilise le versionnage sémantique à partir de `1.0.0`.
+The project uses semantic versioning starting at `1.0.0`.
 
-Avant la version stable :
+Before the stable release:
 
 ```text
 1.0.0-alpha.1
@@ -174,6 +174,8 @@ Avant la version stable :
 
 ## Documentation
 
-La documentation active doit rester courte.
+Active documentation must remain concise.
 
-Une information normative n’existe qu’à un seul endroit. Les documents historiques restent dans `archives/` et ne doivent pas être cités comme règle actuelle.
+English is the sole repository language. New content must be written directly in English, and canonical domain terms from the [Blueprint glossary](01_BLUEPRINT.md#glossary) must be used consistently.
+
+Normative information exists in exactly one place. Historical documents remain under `archives/` and must not be cited as current rules.

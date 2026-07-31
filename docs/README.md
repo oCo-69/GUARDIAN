@@ -1,45 +1,51 @@
-# Documentation GUARDIAN
+# GUARDIAN Documentation
 
-Ce répertoire est le point d’entrée officiel de la documentation du projet.
+This directory is the official entry point for project documentation.
 
-## Parcours humain recommandé
+## Recommended human reading path
 
-1. [`01_BLUEPRINT.md`](01_BLUEPRINT.md) — mission, périmètre, invariants et vocabulaire.
-2. [`adr/`](adr/README.md) — décisions d’architecture acceptées.
-3. [`02_ARCHITECTURE.md`](02_ARCHITECTURE.md) — composants et dépendances.
-4. [`03_DATABASE.md`](03_DATABASE.md) — mémoire persistante SQLite.
-5. [`04_DEVELOPMENT.md`](04_DEVELOPMENT.md) — contribution, tests et livraison.
-6. [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) — décomposition technique du travail planifié.
+1. [`01_BLUEPRINT.md`](01_BLUEPRINT.md) — mission, scope, invariants, and vocabulary.
+2. [`adr/`](adr/README.md) — accepted architecture decisions.
+3. [`02_ARCHITECTURE.md`](02_ARCHITECTURE.md) — components and dependencies.
+4. [`03_DATABASE.md`](03_DATABASE.md) — persistent SQLite memory.
+5. [`04_DEVELOPMENT.md`](04_DEVELOPMENT.md) — contribution, testing, and delivery.
+6. [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) — technical decomposition of planned work.
 
-## Parcours Codex recommandé
+## Recommended Codex reading path
 
-1. [`00_CODEX_GUIDELINES.md`](00_CODEX_GUIDELINES.md) — méthode de travail de Codex.
-2. [`01_BLUEPRINT.md`](01_BLUEPRINT.md) — autorité principale du projet.
-3. les [ADR](adr/README.md) pertinents pour la tâche ;
-4. les références techniques concernées parmi l’Architecture, la Base et le guide de Développement ;
-5. [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) lorsque la tâche concerne la planification.
+1. [`00_CODEX_GUIDELINES.md`](00_CODEX_GUIDELINES.md) — Codex working method.
+2. [`01_BLUEPRINT.md`](01_BLUEPRINT.md) — primary project authority.
+3. the [ADRs](adr/README.md) relevant to the task;
+4. the affected technical references among Architecture, Database, and Development;
+5. [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) when the task concerns planning.
 
-## Rôle et autorité
+## Role and authority
 
-| Document | Sujet dont il est la référence | Statut |
+| Document | Authoritative subject | Status |
 |---|---|---|
-| [`01_BLUEPRINT.md`](01_BLUEPRINT.md) | Mission, périmètre, invariants et contrat de conception | Normatif, autorité principale |
-| [`adr/`](adr/README.md) | Décisions d’architecture durables et leur justification | Normatif lorsque l’ADR est accepté, sous l’autorité du Blueprint |
-| [`02_ARCHITECTURE.md`](02_ARCHITECTURE.md) | Composants, responsabilités et dépendances | Normatif pour l’architecture technique |
-| [`03_DATABASE.md`](03_DATABASE.md) | Modèle de données, transactions, migrations et sauvegarde | Normatif pour la persistance |
-| [`04_DEVELOPMENT.md`](04_DEVELOPMENT.md) | Pratiques de développement, tests et contribution | Normatif pour le développement |
-| [`00_CODEX_GUIDELINES.md`](00_CODEX_GUIDELINES.md) | Méthode de travail de Codex dans ce dépôt | Normatif pour Codex, sans pouvoir redéfinir le projet |
-| [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) | Épics, fonctionnalités et suivi d’implémentation | Document de planification, non normatif |
+| [`01_BLUEPRINT.md`](01_BLUEPRINT.md) | Mission, scope, invariants, vocabulary, and design contract | Normative, primary authority |
+| [`adr/`](adr/README.md) | Durable architecture decisions and their rationale | Normative when accepted, under the authority of the Blueprint |
+| [`02_ARCHITECTURE.md`](02_ARCHITECTURE.md) | Components, responsibilities, and dependencies | Normative for technical architecture |
+| [`03_DATABASE.md`](03_DATABASE.md) | Data model, transactions, migrations, and backup | Normative for persistence |
+| [`04_DEVELOPMENT.md`](04_DEVELOPMENT.md) | Development, testing, and contribution practices | Normative for development |
+| [`00_CODEX_GUIDELINES.md`](00_CODEX_GUIDELINES.md) | Codex working method in this repository | Normative for Codex, without authority to redefine the project |
+| [`05_FEATURE_BACKLOG.md`](05_FEATURE_BACKLOG.md) | Epics, features, and implementation tracking | Non-normative planning document |
 
-En cas de contradiction, le Blueprint prévaut. Un ADR accepté précise le Blueprint sans pouvoir le contredire. Les références techniques s’appliquent ensuite dans leur domaine. Toute contradiction entre documents actifs doit être signalée et soumise à une décision humaine.
+If documents conflict, the Blueprint prevails. An accepted ADR clarifies the Blueprint but cannot contradict it. Technical references then apply within their respective subjects. Any contradiction between active documents must be reported and submitted for a human decision.
 
-## Documents à la racine
+## Canonical language and terminology
 
-- [`../README.md`](../README.md) présente le projet et dirige vers cette documentation.
-- [`../MANIFESTO.md`](../MANIFESTO.md) expose l’intention fondatrice.
-- [`../ROADMAP.md`](../ROADMAP.md) fixe l’ordre des jalons ; le backlog en détaille le travail sans modifier cet ordre.
-- [`../CHANGELOG.md`](../CHANGELOG.md) consigne les changements notables.
+English is the sole language of the repository. New repository content must be written directly in English rather than translated after drafting. Bilingual documentation is not permitted.
+
+Canonical domain terms are defined by the [Blueprint glossary](01_BLUEPRINT.md#glossary). Once adopted, a canonical term must be used consistently throughout active documentation, ADRs, source comments, tests, and commit messages. A new synonym must not be introduced for an existing concept.
+
+## Root documents
+
+- [`../README.md`](../README.md) introduces the project and directs readers to this documentation.
+- [`../MANIFESTO.md`](../MANIFESTO.md) states the founding intent.
+- [`../ROADMAP.md`](../ROADMAP.md) defines milestone order; the backlog details the work without changing that order.
+- [`../CHANGELOG.md`](../CHANGELOG.md) records notable changes.
 
 ## Archives
 
-Les fichiers de [`../archives/`](../archives/README.md) conservent l’histoire du projet. Ils ne sont jamais normatifs et ne doivent pas servir à trancher une décision actuelle.
+Files under [`../archives/`](../archives/README.md) preserve project history. They are never normative and must not be used to resolve a current decision.

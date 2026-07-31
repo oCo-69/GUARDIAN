@@ -1,19 +1,19 @@
-# ADR-002 — Une série est identifiée au niveau de l’œuvre
+# ADR-002 — A Series is identified at the Work level
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Identifier chaque épisode manuellement répète la même décision et augmente le risque d’incohérence.
+Manually identifying every Episode repeats the same Decision and increases the risk of inconsistency.
 
-## Décision
+## Decision
 
-Une décision de série relie une œuvre source à une identité officielle. Les épisodes héritent de cette identité et utilisent leurs numéros de saison et d’épisode.
+A Series Decision connects a SourceWork to an official identity. Episodes inherit this identity and use their season and episode numbers.
 
-## Conséquences
+## Consequences
 
-- l’interface demande une seule validation par série ;
-- le parser produit des descripteurs d’épisodes ;
-- les anomalies restent traitées explicitement.
+- the interface requests one validation per Series;
+- the parser produces EpisodeDescriptors;
+- anomalies remain explicit.

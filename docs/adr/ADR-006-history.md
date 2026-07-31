@@ -1,19 +1,19 @@
-# ADR-006 — Historique append-only
+# ADR-006 — Append-only History
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Le diagnostic et la restauration exigent de comprendre l’évolution des décisions.
+Diagnosis and restoration require an understanding of how Decisions evolved.
 
-## Décision
+## Decision
 
-Les événements sont ajoutés sans réécriture. Une restauration crée une nouvelle décision au lieu d’effacer l’histoire.
+HistoryEvents are appended without rewriting. A restoration creates a new Decision instead of erasing History.
 
-## Conséquences
+## Consequences
 
-- traçabilité complète ;
-- comparaison avant/après ;
-- croissance maîtrisée par archivage éventuel, jamais par suppression silencieuse.
+- complete traceability;
+- before-and-after comparison;
+- growth may be managed through future archival, never through silent deletion.

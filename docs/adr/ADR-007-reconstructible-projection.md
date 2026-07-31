@@ -1,20 +1,20 @@
-# ADR-007 — Projection jetable et reconstructible
+# ADR-007 — Projection is disposable and reconstructible
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-La destination ne doit pas devenir une seconde source de vérité fragile.
+The destination must not become a fragile second source of truth.
 
-## Décision
+## Decision
 
-La bibliothèque virtuelle est entièrement dérivée de la source et des décisions Guardian.
+The virtual library is entirely derived from the Source and Guardian Decisions.
 
-## Conséquences
+## Consequences
 
-- noms déterministes ;
-- manifestes de build ;
-- suppression et reconstruction possibles ;
-- aucune sauvegarde obligatoire des vidéos projetées.
+- deterministic names;
+- Build manifests;
+- deletion and reconstruction are possible;
+- projected videos do not require backup.

@@ -1,77 +1,77 @@
 # Roadmap
 
-Cette Roadmap fixe l’ordre des jalons du projet. Le [`Feature Backlog`](docs/05_FEATURE_BACKLOG.md) décompose leur implémentation sans modifier leur priorité ni leur portée.
+This Roadmap defines the order of project milestones. The [`Feature Backlog`](docs/05_FEATURE_BACKLOG.md) decomposes their implementation without changing their priority or scope.
 
-## v1.0.0-alpha.1 — Fondation
+## v1.0.0-alpha.1 — Foundation
 
-Objectif : première application lançable.
+Objective: first launchable application.
 
-- solution .NET ;
-- interface WPF minimale ;
-- configuration source et destination ;
-- SQLite et migrations ;
-- scanner en lecture seule ;
-- parser initial ;
-- regroupement séries et films ;
-- tableau de bord et liste des œuvres.
+- .NET solution;
+- minimal WPF interface;
+- source and destination configuration;
+- SQLite and migrations;
+- read-only scanner;
+- initial parser;
+- series and movie grouping;
+- dashboard and work list.
 
 ## v1.0.0-alpha.2 — Identification
 
-- fournisseur TMDb optionnel ;
-- stockage sécurisé du jeton ;
-- recherche de candidats ;
-- recherche navigateur de repli ;
-- collage d’URL et saisie d’identifiant ;
-- aperçu ;
-- validation persistante.
+- optional TMDb provider;
+- secure token storage;
+- candidate search;
+- fallback browser search;
+- URL paste and identifier entry;
+- preview;
+- persistent validation.
 
 ## v1.0.0-alpha.3 — Protection
 
-- verrouillage et déverrouillage ;
-- réidentification ;
-- historique append-only ;
-- comparaison avant/après ;
-- restauration d’une décision antérieure ;
-- actions forcées explicites.
+- locking and unlocking;
+- reidentification;
+- append-only history;
+- before-and-after comparison;
+- restoration of a previous decision;
+- explicit forced actions.
 
-## v1.0.0-beta.1 — Construction
+## v1.0.0-beta.1 — Build
 
-- plan de construction ;
-- mode simulation ;
-- arborescence Jellyfin ;
-- liens physiques ;
-- liens symboliques optionnels ;
-- NFO minimaux ;
-- construction temporaire et basculement sûr ;
-- reconstruction par œuvre ou complète.
+- build plan;
+- dry-run mode;
+- Jellyfin directory structure;
+- hard links;
+- optional symbolic links;
+- minimal NFO files;
+- temporary build and safe switch;
+- per-work or complete reconstruction.
 
 ## v1.0.0-beta.2 — Audit
 
-- cohérence source / décision / projection ;
-- détection des éléments absents ou modifiés ;
-- conflits ;
-- rapports ;
-- lecteur Jellyfin optionnel en lecture seule.
+- source / decision / projection consistency;
+- detection of missing or modified items;
+- conflicts;
+- reports;
+- optional read-only Jellyfin reader.
 
 ## v1.0.0 — Stable
 
-- installateur Windows ;
-- sauvegarde et restauration ;
-- migrations robustes ;
-- tests de non-régression ;
-- documentation utilisateur ;
-- journalisation configurable ;
-- validation sur une bibliothèque réelle représentative.
+- Windows installer;
+- backup and restore;
+- robust migrations;
+- regression tests;
+- user documentation;
+- configurable logging;
+- validation against a representative real-world library.
 
-## Après la v1
+## After v1
 
-Les évolutions ne seront intégrées que si elles servent la mission principale.
+Changes will be integrated only when they serve the primary mission.
 
-Pistes possibles :
+Possible directions:
 
-- fournisseurs supplémentaires ;
-- amélioration des règles de regroupement ;
-- Guardian Companion pour le confort de navigation web desktop ;
-- intelligence de découverte fondée sur les liens déjà présents dans la collection.
+- additional providers;
+- improved grouping rules;
+- Guardian Companion for more convenient desktop web navigation;
+- discovery intelligence based on relationships already present in the collection.
 
-Ces pistes ne doivent jamais fragiliser le cœur : mémoire, verrouillage, reconstruction et source inviolable.
+These directions must never weaken the core: memory, locking, reconstruction, and an inviolable source.

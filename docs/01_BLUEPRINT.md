@@ -2,164 +2,164 @@
 
 > [Documentation](README.md) · [ADR](adr/README.md)
 
-## 1. Statut
+## 1. Status
 
-Ce document est le contrat de conception de Guardian v1.
+This document is the Guardian v1 design contract.
 
-Toute fonctionnalité doit respecter les invariants, responsabilités et limites définis ici. Lorsqu’une décision nouvelle modifie ce contrat, elle doit être documentée par un ADR.
+Every feature must respect the invariants, responsibilities, and boundaries defined here. When a new decision changes this contract, it must be documented by an ADR.
 
 ## 2. Mission
 
-Guardian relie sans ambiguïté l’organisation locale d’une collection aux identités officielles des œuvres, puis construit une représentation que Jellyfin reconnaît correctement, sans toucher aux originaux.
+Guardian unambiguously connects the local organization of a collection to the official identities of its works, then builds a representation that Jellyfin can recognize correctly without touching the originals.
 
-Guardian conserve également les relations métier définies entre plusieurs œuvres, quels que soient leur type (films, séries, OVA, spéciaux, etc.), leur emplacement source ou leur répartition entre bibliothèques. Cette connaissance reste indépendante de la plateforme cible afin de permettre sa reconstruction et d’autres formes de projection.
+Guardian also preserves business relationships defined between multiple works, regardless of their type (movies, series, OVAs, specials, and others), source location, or distribution across libraries. This knowledge remains independent of the target platform so that it can be reconstructed and support other forms of projection.
 
-Correspondances fondamentales :
+Fundamental mappings:
 
 ```text
-Série : œuvre source ↔ identité officielle d’une série
-Film  : œuvre source ↔ identité officielle d’un film
+Series: SourceWork ↔ official series identity
+Movie:  SourceWork ↔ official movie identity
 ```
 
-Les épisodes héritent de l’identité de leur série. Ils ne sont pas identifiés manuellement un par un.
+Episodes inherit the identity of their series. They are not identified manually one by one.
 
-## 3. Périmètre de la v1
+## 3. v1 scope
 
-### Inclus
+### Included
 
-- scan d’un ou plusieurs répertoires sources en lecture seule ;
-- détection des séries, films, épisodes, spéciaux et cas ambigus ;
-- regroupement des épisodes sous une œuvre série ;
-- recherche de candidats via TMDb lorsque l’accès API est configuré ;
-- recherche manuelle par navigateur comme solution de repli ;
-- saisie directe d’un identifiant ou collage d’une URL ;
-- validation, verrouillage, déverrouillage et réidentification ;
-- historique append-only ;
-- bibliothèque virtuelle Jellyfin par liens ;
-- noms compatibles, dossiers de saisons et NFO minimaux ;
-- audit entre source, mémoire Guardian et sortie générée.
+- read-only scanning of one or more source directories;
+- detection of series, movies, episodes, specials, and ambiguous cases;
+- grouping episodes under a series work;
+- Candidate search through TMDb when API access is configured;
+- manual browser search as a fallback;
+- direct identifier entry or URL paste;
+- validation, locking, unlocking, and reidentification;
+- append-only history;
+- link-based Jellyfin virtual library;
+- compatible names, season directories, and minimal NFO files;
+- audits across the source, Guardian memory, and generated output.
 
-### Exclus de la première livraison
+### Excluded from the first release
 
-- modification de la bibliothèque source ;
-- modification directe de la base Jellyfin ;
-- encyclopédie locale complète ;
-- scraping massif ;
-- validation automatique irréversible ;
-- remplacement de Jellyfin ;
-- gestion exhaustive des affiches, acteurs, synopsis et notes ;
-- fonctions TV natives autres que celles déjà offertes par Jellyfin.
+- modification of the source library;
+- direct modification of the Jellyfin database;
+- a complete local encyclopedia;
+- large-scale scraping;
+- irreversible automatic validation;
+- replacement of Jellyfin;
+- exhaustive management of artwork, actors, synopses, and ratings;
+- native TV features beyond those already provided by Jellyfin.
 
-## 4. Invariants non négociables
+## 4. Non-negotiable invariants
 
-### P1 — Source inviolable
+### P1 — Inviolable source
 
-Guardian n’écrit jamais dans les répertoires sources.
+Guardian never writes to source directories.
 
-### P2 — Autorité utilisateur
+### P2 — User authority
 
-Guardian peut proposer, jamais imposer. Une proposition ne devient une décision qu’après validation explicite.
+Guardian may propose, never impose. A Candidate becomes a Decision only after explicit validation.
 
-### P3 — Identité au niveau de l’œuvre
+### P3 — Work-level identity
 
-Une série est identifiée une fois. Ses épisodes héritent de cette identité et sont rattachés par leurs numéros de saison et d’épisode.
+A Series is identified once. Its Episodes inherit that identity and are attached through their season and episode numbers.
 
-### P4 — Verrouillage protecteur
+### P4 — Protective locking
 
-Une décision verrouillée ne peut être remplacée par un scan, un import, une règle, un fournisseur ou une suggestion.
+A locked Decision cannot be replaced by a scan, import, rule, Provider, or Candidate.
 
-### P5 — Historique append-only
+### P5 — Append-only history
 
-Une décision antérieure n’est pas effacée silencieusement. Toute évolution crée un nouvel événement et, lorsqu’il y a remplacement, une nouvelle décision liée à la précédente.
+A previous Decision is never silently erased. Every change creates a new HistoryEvent and, when replacement occurs, a new Decision linked to the previous one.
 
-### P6 — Sortie dérivée
+### P6 — Derived output
 
-La bibliothèque virtuelle, les NFO, les manifestes et les rapports sont dérivés. Ils doivent pouvoir être supprimés puis recréés.
+The virtual library, NFO files, manifests, and reports are derived. They must be deletable and reconstructible.
 
-### P7 — Mémoire minimale
+### P7 — Minimal memory
 
-Guardian conserve les identités, décisions, verrous, scans, constructions et événements nécessaires. Il ne maintient pas une encyclopédie parallèle.
+Guardian preserves the identities, Decisions, Locks, scans, Builds, and HistoryEvents it needs. It does not maintain a parallel encyclopedia.
 
-### P8 — Échec sûr
+### P8 — Safe failure
 
-En cas d’incertitude, Guardian isole le cas concerné et demande une décision. Il ne dégrade ni la source ni une projection valide existante.
+When uncertainty remains, Guardian isolates the affected case and requests a Decision. It does not degrade either the source or an existing valid Projection.
 
-### P9 — Relations métier indépendantes
+### P9 — Independent business relationships
 
-Les relations entre les œuvres appartiennent au modèle métier Guardian et non à la plateforme de projection.
+Relationships between Works belong to the Guardian domain model, not to the projection platform.
 
-## 5. Modèle conceptuel
+## 5. Conceptual model
 
-| Objet | Responsabilité |
+| Object | Responsibility |
 |---|---|
-| `SourceRoot` | Racine protégée contenant les originaux |
-| `SourceWork` | Œuvre logique locale : série, film ou cas ambigu |
-| `SourceFile` | Fichier original identifié par chemin et empreinte |
-| `EpisodeDescriptor` | Saison, épisode et titre local déduits du fichier |
-| `ProviderIdentity` | Fournisseur, type et identifiant officiel |
-| `Candidate` | Proposition non validée |
-| `Decision` | Choix validé reliant une œuvre locale à une identité |
-| `Lock` | Protection fonctionnelle d’une décision |
-| `HistoryEvent` | Trace horodatée d’une action ou d’un changement |
-| `GeneratedItem` | Élément créé dans la projection |
-| `ScanSnapshot` | État logique d’un scan |
-| `BuildRun` | Exécution d’une construction |
+| `SourceRoot` | Protected root containing the originals |
+| `SourceWork` | Logical local work: Series, Movie, or ambiguous case |
+| `SourceFile` | Original file identified by path and fingerprint |
+| `EpisodeDescriptor` | Season, episode, and local title inferred from a file |
+| `ProviderIdentity` | Provider, media type, and official identifier |
+| `Candidate` | Unvalidated possible match |
+| `Decision` | Validated choice connecting a SourceWork to an identity |
+| `Lock` | Functional protection of a Decision |
+| `HistoryEvent` | Timestamped record of an action or change |
+| `GeneratedItem` | Item created in the Projection |
+| `ScanSnapshot` | Logical state of a scan |
+| `BuildRun` | Execution record for a Build |
 
-## Glossaire
+## Glossary
 
 ### Source concepts
 
-- **Source** — collection originale de médias que Guardian observe sans la modifier.
-- **SourceRoot** — racine configurée en lecture seule contenant une partie de la Source.
-- **SourceWork** — regroupement logique local de fichiers représentant une œuvre ou un cas encore ambigu.
-- **SourceFile** — fichier média original observé dans un SourceRoot.
-- **Work** — œuvre média servant d’unité d’identité, indépendamment du nombre de fichiers associés.
-- **Series** — Work composée d’épisodes qui héritent d’une même identité de série.
-- **Movie** — Work représentant un film unique, portée par un fichier ou un groupe déclaré équivalent.
-- **Episode** — élément d’une Series repéré par ses numéros de saison et d’épisode.
+- **Source** — original media collection that Guardian observes without modifying.
+- **SourceRoot** — configured read-only root containing part of the Source.
+- **SourceWork** — logical local grouping of files representing a Work or a case that remains ambiguous.
+- **SourceFile** — original media file observed within a SourceRoot.
+- **Work** — media work serving as the unit of identity, regardless of the number of associated files.
+- **Series** — Work composed of Episodes that inherit the same series identity.
+- **Movie** — Work representing one movie, carried by one file or a group explicitly declared equivalent.
+- **Episode** — element of a Series identified by season and episode numbers.
 
 ### Identity concepts
 
-- **Provider** — adaptateur optionnel vers une source externe d’identités et de métadonnées minimales.
-- **Candidate** — proposition non validée reliant un SourceWork à une ProviderIdentity possible.
-- **ProviderIdentity** — identité officielle minimale et normalisée fournie par un Provider.
-- **Decision** — choix validé reliant un SourceWork à une ProviderIdentity.
-- **Lock** — protection fonctionnelle empêchant le remplacement automatique d’une Decision.
-- **HistoryEvent** — trace append-only d’une action ou d’un changement significatif.
+- **Provider** — optional adapter to an external source of identities and minimal metadata.
+- **Candidate** — unvalidated possible match connecting a SourceWork to a potential ProviderIdentity.
+- **ProviderIdentity** — minimal normalized official identity supplied by a Provider.
+- **Decision** — validated choice connecting a SourceWork to a ProviderIdentity.
+- **Lock** — functional protection preventing automatic replacement of a Decision.
+- **HistoryEvent** — append-only record of an action or significant change.
 
 ### Projection concepts
 
-- **Projection** — bibliothèque Jellyfin dérivée, jetable et reconstructible.
-- **Build** — exécution qui construit ou reconstruit tout ou partie de la Projection.
-- **Audit** — comparaison entre la Source, les Decision et la Projection, éventuellement complétée par une lecture de Jellyfin.
+- **Projection** — derived, disposable, and reconstructible Jellyfin library.
+- **Build** — execution that builds or rebuilds all or part of the Projection.
+- **Audit** — comparison across the Source, Decisions, and Projection, optionally supplemented by a Jellyfin read.
 
-## 6. Workflow principal
+## 6. Primary workflow
 
 ```text
-Scanner
+Scan
   ↓
-Regrouper les œuvres
+Group Works
   ↓
-Rechercher des candidats
+Search for Candidates
   ↓
-Présenter
+Present
   ↓
-Validation utilisateur
+User validation
   ↓
-Verrouillage facultatif
+Optional Lock
   ↓
-Construction
+Build
   ↓
 Audit
 ```
 
-Aucun candidat ne peut être utilisé par le constructeur avant validation.
+No Candidate can be used by the Builder before validation.
 
-## 7. Règles d’identification
+## 7. Identification rules
 
-### Séries
+### Series
 
-La décision porte sur l’œuvre série, généralement issue d’un dossier ou d’un groupe logique.
+The Decision applies to the Series Work, generally inferred from a directory or logical group.
 
 ```text
 G:\_MANGAS\Dororo
@@ -167,82 +167,82 @@ G:\_MANGAS\Dororo
 TMDb / TV / 83100
 ```
 
-Tous les épisodes associés héritent de cette identité.
+All associated Episodes inherit this identity.
 
-### Films
+### Movies
 
-La décision porte sur un fichier ou un groupe explicitement déclaré comme représentant le même film.
+The Decision applies to one file or to a group explicitly declared to represent the same Movie.
 
-### Spéciaux, OVA et ambiguïtés
+### Specials, OVAs, and ambiguous cases
 
-Guardian peut proposer une catégorie, mais ne transforme pas silencieusement un spécial en film ou en épisode lorsque ce choix affecte l’organisation Jellyfin.
+Guardian may propose a category, but it does not silently transform a special into a Movie or Episode when that choice affects Jellyfin organization.
 
-## 8. Fournisseurs et TMDb
+## 8. Providers and TMDb
 
-TMDb est un fournisseur optionnel de candidats et de métadonnées minimales.
+TMDb is an optional Provider of Candidates and minimal metadata.
 
-Lorsqu’un jeton est configuré :
+When a token is configured:
 
-1. Guardian construit une requête à partir du titre local, de l’année probable et du type d’œuvre.
-2. Le fournisseur retourne des candidats.
-3. Guardian les présente avec leurs informations distinctives.
-4. L’utilisateur choisit et valide.
-5. Guardian enregistre l’identité normalisée.
+1. Guardian builds a query from the local title, probable year, and Work type.
+2. The Provider returns Candidates.
+3. Guardian presents them with distinguishing information.
+4. The user selects and validates one.
+5. Guardian records the normalized ProviderIdentity.
 
-Sans API, Guardian doit rester utilisable grâce à une recherche ouverte dans le navigateur et au collage d’une URL ou d’un identifiant.
+Without API access, Guardian must remain usable through an open browser search and by pasting a URL or identifier.
 
-Une réponse d’API est toujours une proposition, jamais une validation.
+An API response is always a Candidate, never a Decision.
 
-## 9. États
+## 9. States
 
-États principaux :
+Primary states:
 
 ```text
-Découverte → À identifier → À vérifier → Validée → Verrouillée
+Discovered → Unidentified → Needs review → Validated → Locked
 ```
 
-États complémentaires :
+Additional states:
 
-- `Conflit` : la projection ou Jellyfin ne correspond pas à la décision ;
-- `Obsolète` : la source a suffisamment changé pour nécessiter une revue ;
-- `Erreur` : une opération a échoué sans dégrader les acquis.
+- `Conflict`: the Projection or Jellyfin does not match the Decision;
+- `Stale`: the Source has changed enough to require review;
+- `Error`: an operation failed without degrading established work.
 
-## 10. Verrouillage
+## 10. Locking
 
-Le verrou est appliqué dans le domaine, pas seulement dans l’interface.
+The Lock is enforced in the domain, not only in the interface.
 
-- une décision verrouillée reste visible et auditable ;
-- un conflit peut être signalé sans modifier la décision ;
-- toute réidentification exige un déverrouillage explicite ;
-- verrouillage et déverrouillage créent des événements ;
-- restaurer une ancienne décision crée une nouvelle décision ;
-- aucune automatisation ne contourne le verrou.
+- a locked Decision remains visible and auditable;
+- a conflict can be reported without modifying the Decision;
+- every reidentification requires explicit unlocking;
+- locking and unlocking create HistoryEvents;
+- restoring a previous Decision creates a new Decision;
+- no automation bypasses the Lock.
 
-## 11. Historique
+## 11. History
 
-L’historique doit répondre à quatre questions :
+History must answer four questions:
 
-1. Qu’est-ce qui a changé ?
-2. Quand ?
-3. Pourquoi ou par quelle action ?
-4. Quel était l’état avant et après ?
+1. What changed?
+2. When?
+3. Why, or through which action?
+4. What were the states before and after?
 
-Événements minimaux :
+Minimum HistoryEvent types:
 
-- scan ;
-- proposition ;
-- validation ;
-- verrouillage ;
-- déverrouillage ;
-- réidentification ;
-- construction ;
-- conflit ;
-- restauration ;
-- erreur.
+- scan;
+- Candidate proposed;
+- validation;
+- locking;
+- unlocking;
+- reidentification;
+- Build;
+- conflict;
+- restoration;
+- error.
 
-## 12. Bibliothèque virtuelle
+## 12. Virtual library
 
-Exemple :
+Example:
 
 ```text
 G:\_JELLYFIN_MANGAS\
@@ -254,105 +254,105 @@ G:\_JELLYFIN_MANGAS\
         └── ...
 ```
 
-Règles :
+Rules:
 
-- liens physiques sur un même volume ;
-- liens symboliques uniquement après choix explicite et vérification des droits ;
-- aucune copie vidéo par défaut ;
-- écriture limitée à la racine de projection Guardian ;
-- construction temporaire avant basculement lorsqu’une opération concerne plusieurs éléments ;
-- manifeste de chaque élément généré ;
-- noms déterministes ;
-- NFO minimaux destinés à renforcer l’identité.
+- hard links on the same volume;
+- symbolic links only after explicit choice and permission verification;
+- no video copy by default;
+- writes limited to the Guardian Projection root;
+- temporary Build before switching when an operation affects multiple items;
+- a manifest for every generated item;
+- deterministic names;
+- minimal NFO files intended to reinforce identity.
 
-## 13. Services applicatifs
+## 13. Application services
 
-| Service | Contrat essentiel |
+| Service | Essential contract |
 |---|---|
-| `ScanLibrary` | Lit les sources et produit un snapshot ; aucune écriture source |
-| `GroupWorks` | Regroupe les fichiers sous des œuvres logiques |
-| `SearchCandidates` | Retourne des propositions ; ne crée aucune décision |
-| `ParseProviderReference` | Normalise une URL ou un identifiant |
-| `ValidateDecision` | Crée une décision validée et un événement |
-| `LockDecision` | Protège une décision validée |
-| `ReidentifyWork` | Refuse si verrouillé ; conserve l’ancienne décision |
-| `RestoreDecision` | Crée une nouvelle décision à partir de l’historique |
-| `BuildWork` | Construit uniquement une œuvre validée |
-| `BuildLibrary` | Construit les œuvres éligibles et isole les échecs |
-| `AuditWork` | Compare source, décision, projection et éventuellement Jellyfin |
+| `ScanLibrary` | Reads Sources and produces a ScanSnapshot; never writes to the Source |
+| `GroupWorks` | Groups files under logical Works |
+| `SearchCandidates` | Returns Candidates; never creates a Decision |
+| `ParseProviderReference` | Normalizes a URL or identifier |
+| `ValidateDecision` | Creates a validated Decision and a HistoryEvent |
+| `LockDecision` | Protects a validated Decision |
+| `ReidentifyWork` | Refuses when locked; preserves the previous Decision |
+| `RestoreDecision` | Creates a new Decision from History |
+| `BuildWork` | Builds only a validated Work |
+| `BuildLibrary` | Builds eligible Works and isolates failures |
+| `AuditWork` | Compares the Source, Decision, Projection, and optionally Jellyfin |
 
-## 14. Interface de la v1
+## 14. v1 interface
 
-Écrans principaux :
+Primary screens:
 
-- Tableau de bord ;
-- Bibliothèque ;
-- Identification ;
-- Détail d’une œuvre ;
-- Historique ;
-- Paramètres.
+- Dashboard;
+- Library;
+- Identification;
+- Work details;
+- History;
+- Settings.
 
-Actions visibles par œuvre :
+Visible actions for each Work:
 
-- identifier ;
-- valider ;
-- verrouiller ou déverrouiller ;
-- réidentifier ;
-- saisir une référence fournisseur ;
-- ouvrir le résultat ;
-- reconstruire ;
-- auditer ;
-- consulter l’historique ;
-- restaurer une décision antérieure.
+- identify;
+- validate;
+- lock or unlock;
+- reidentify;
+- enter a Provider reference;
+- open the result;
+- rebuild;
+- audit;
+- inspect History;
+- restore a previous Decision.
 
-## 15. Gestion des erreurs
+## 15. Error handling
 
-- une erreur sur une œuvre ne bloque pas les autres ;
-- une projection valide n’est pas supprimée avant que sa remplaçante soit prête ;
-- les erreurs ont un message clair et un détail technique copiable ;
-- les opérations multi-étapes utilisent des transactions logiques ;
-- les écritures SQLite utilisent des transactions ;
-- les conflits de noms, volumes incompatibles et droits insuffisants sont détectés avant écriture ;
-- toute construction propose un mode simulation.
+- an error affecting one Work does not block the others;
+- a valid Projection is not removed before its replacement is ready;
+- errors provide a clear message and copyable technical details;
+- multi-step operations use logical transactions;
+- SQLite writes use transactions;
+- name conflicts, incompatible volumes, and insufficient permissions are detected before writing;
+- every Build offers a dry-run mode.
 
-## 16. Sécurité et confidentialité
+## 16. Security and privacy
 
-- aucune télémétrie obligatoire ;
-- aucun envoi des chemins locaux vers un serveur Guardian ;
-- secrets de fournisseurs stockés via un mécanisme sécurisé du système ;
-- secrets absents des journaux et rapports ;
-- sauvegarde simple de la base locale ;
-- journaux nettoyables et configurables ;
-- aucune lecture silencieuse du navigateur ;
-- confidentialité explicite des documents et captures du projet.
+- no mandatory telemetry;
+- no transmission of local paths to a Guardian server;
+- Provider secrets stored through a secure operating-system mechanism;
+- secrets excluded from logs and reports;
+- simple backup of the local database;
+- configurable and removable logs;
+- no silent browser inspection;
+- explicit privacy rules for project documents and screenshots.
 
-## 17. Critères d’acceptation de la première version essayable
+## 17. Acceptance criteria for the first testable version
 
-1. L’application démarre sans ligne de commande.
-2. L’utilisateur choisit source et destination.
-3. Le scan regroupe correctement les épisodes et isole les films.
-4. Une série n’est jamais identifiée épisode par épisode.
-5. TMDb peut proposer des candidats lorsqu’il est configuré.
-6. Une URL ou un identifiant peut être saisi manuellement.
-7. La validation crée une décision persistante.
-8. Le verrou empêche toute substitution accidentelle.
-9. La réidentification conserve l’ancienne décision.
-10. La reconstruction crée une arborescence Jellyfin, des liens et des NFO minimaux.
-11. Une suppression complète de la projection suivie d’une reconstruction produit le même résultat logique.
-12. Aucune opération ne modifie la source.
-13. Un audit distingue les œuvres validées, verrouillées, conflictuelles et à traiter.
+1. The application starts without a command line.
+2. The user chooses a Source and destination.
+3. The scan groups Episodes correctly and isolates Movies.
+4. A Series is never identified Episode by Episode.
+5. TMDb can propose Candidates when configured.
+6. A URL or identifier can be entered manually.
+7. Validation creates a persistent Decision.
+8. A Lock prevents accidental replacement.
+9. Reidentification preserves the previous Decision.
+10. Reconstruction creates a Jellyfin directory structure, links, and minimal NFO files.
+11. Deleting the complete Projection and rebuilding it produces the same logical result.
+12. No operation modifies the Source.
+13. An Audit distinguishes validated, locked, conflicting, and pending Works.
 
-## 18. Gouvernance
+## 18. Governance
 
-Avant d’accepter une fonctionnalité, vérifier qu’elle :
+Before accepting a feature, verify that it:
 
-- aide directement la reconnaissance ou la maintenance de la bibliothèque ;
-- respecte l’inviolabilité de la source ;
-- préserve l’autorité de l’utilisateur ;
-- respecte les verrous ;
-- produit une sortie reconstructible ;
-- évite de refaire inutilement un service existant ;
-- reste traçable ;
-- peut échouer sans dégrader les acquis.
+- directly helps recognition or maintenance of the library;
+- respects the inviolability of the Source;
+- preserves user authority;
+- respects Locks;
+- produces reconstructible output;
+- avoids unnecessarily duplicating an existing service;
+- remains traceable;
+- can fail without degrading established work.
 
-Lorsqu’une réponse est négative, la fonctionnalité doit être modifiée, isolée comme module optionnel ou rejetée.
+When any answer is negative, the feature must be revised, isolated as an optional module, or rejected.

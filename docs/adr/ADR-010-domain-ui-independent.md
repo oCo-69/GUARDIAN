@@ -1,19 +1,19 @@
-# ADR-010 — Le cœur métier est indépendant de l’interface
+# ADR-010 — The Domain is independent of the user interface
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Les règles de sécurité et de décision doivent rester testables et stables, indépendamment de WPF.
+Safety and Decision rules must remain testable and stable independently of WPF.
 
-## Décision
+## Decision
 
-Le domaine et les services applicatifs ne dépendent pas de l’interface graphique.
+The Domain and Application services do not depend on the graphical interface.
 
-## Conséquences
+## Consequences
 
-- tests unitaires sans UI ;
-- possibilité d’une autre interface future ;
-- code-behind limité à la présentation.
+- unit tests without a user interface;
+- future interfaces remain possible;
+- code-behind is limited to presentation.

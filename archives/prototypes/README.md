@@ -1,14 +1,14 @@
 # Prototypes — Archive
 
-Les premiers prototypes Guardian étaient des scripts PowerShell consacrés notamment à :
+The first Guardian prototypes were PowerShell scripts focused on:
 
-- l’audit Jellyfin ;
-- la sauvegarde des bases ;
-- la vérification SQLite ;
-- le contrôle des champs verrouillés ;
-- la production de rapports ;
-- les premières expériences de bibliothèque virtuelle.
+- Jellyfin audits;
+- database backups;
+- SQLite verification;
+- locked-field checks;
+- report generation;
+- early virtual library experiments.
 
-Ils ont permis de comprendre le problème, mais ne constituent pas la base technique de Guardian v1.
+They helped clarify the problem but do not form the technical foundation of Guardian v1.
 
-Le code source exact des prototypes doit être ajouté ici lorsqu’il est récupéré depuis les archives locales. Le projet actif ne doit pas dépendre de ces scripts.
+The exact prototype source code should be added here when recovered from local archives. The active project must not depend on these scripts.

@@ -1,14 +1,14 @@
-# Modèle de données SQLite
+# SQLite Data Model
 
 > [Documentation](README.md) · [Blueprint](01_BLUEPRINT.md) · [ADR](adr/README.md)
 
-## Rôle
+## Role
 
-SQLite est la mémoire persistante de Guardian.
+SQLite is Guardian's persistent memory.
 
-La base conserve les observations locales, les identités minimales, les décisions, les verrous, l’historique et l’état des constructions. Elle ne contient pas une copie complète de TMDb ou d’un autre fournisseur.
+The database preserves local observations, minimal identities, Decisions, Locks, History, and Build state. It does not contain a complete copy of TMDb or another Provider.
 
-## Tables principales
+## Primary tables
 
 ### `schema_migrations`
 
@@ -29,7 +29,7 @@ created_at
 updated_at
 ```
 
-Contrainte : une racine active de la v1 est toujours déclarée en lecture seule.
+Constraint: an active v1 SourceRoot is always declared read-only.
 
 ### `source_works`
 
@@ -45,7 +45,7 @@ created_at
 updated_at
 ```
 
-`kind` : `series`, `movie`, `special`, `ambiguous`.
+`kind`: `series`, `movie`, `special`, `ambiguous`.
 
 ### `source_files`
 
@@ -64,11 +64,11 @@ created_at
 updated_at
 ```
 
-Contraintes :
+Constraints:
 
-- `path` unique dans une racine ;
-- saison et épisode facultatifs ;
-- aucune colonne ne doit supposer qu’un épisode possède sa propre identité de série.
+- `path` is unique within a SourceRoot;
+- season and episode are optional;
+- no column may assume that an Episode owns a separate series identity.
 
 ### `provider_identities`
 
@@ -83,7 +83,7 @@ source_url
 created_at
 ```
 
-Unicité :
+Uniqueness:
 
 ```text
 (provider, media_type, provider_id)
@@ -102,7 +102,7 @@ created_at
 expires_at
 ```
 
-Les candidats sont temporaires et ne sont jamais utilisés directement par le constructeur.
+Candidates are temporary and are never used directly by the Builder.
 
 ### `decisions`
 
@@ -118,13 +118,13 @@ supersedes_id
 reason
 ```
 
-Règles :
+Rules:
 
-- une décision validée est immuable ;
-- la réidentification crée une nouvelle ligne ;
-- `supersedes_id` relie la nouvelle décision à la précédente ;
-- une seule décision courante par œuvre ;
-- le verrou est contrôlé par le domaine.
+- a validated Decision is immutable;
+- reidentification creates a new row;
+- `supersedes_id` links the new Decision to the previous one;
+- only one current Decision exists per Work;
+- the Lock is enforced by the Domain.
 
 ### `history_events`
 
@@ -187,53 +187,53 @@ value_json
 updated_at
 ```
 
-Les secrets ne doivent pas être stockés en clair dans cette table.
+Secrets must not be stored in plaintext in this table.
 
 ## Transactions
 
-Doivent être transactionnels :
+The following operations must be transactional:
 
-- application d’un snapshot de scan ;
-- validation d’une décision et création de son événement ;
-- verrouillage ou déverrouillage et événement associé ;
-- réidentification ;
-- restauration ;
-- enregistrement final d’un build.
+- applying a ScanSnapshot;
+- validating a Decision and creating its HistoryEvent;
+- locking or unlocking and creating the associated HistoryEvent;
+- reidentification;
+- restoration;
+- final Build recording.
 
-Le système de fichiers et SQLite ne partagent pas une transaction technique unique. Guardian utilise donc une transaction logique :
+The file system and SQLite do not share one technical transaction. Guardian therefore uses a logical transaction:
 
-1. préparer ;
-2. valider les préconditions ;
-3. construire dans un espace temporaire ;
-4. vérifier ;
-5. basculer ;
-6. enregistrer le succès ;
-7. nettoyer.
+1. prepare;
+2. validate preconditions;
+3. build in a temporary space;
+4. verify;
+5. switch;
+6. record success;
+7. clean up.
 
 ## Migrations
 
-Chaque migration doit être :
+Every migration must be:
 
-- versionnée ;
-- testée ;
-- transactionnelle lorsque SQLite le permet ;
-- précédée d’une sauvegarde lors d’une mise à niveau utilisateur ;
-- non destructive pour les décisions et l’historique.
+- versioned;
+- tested;
+- transactional when SQLite permits;
+- preceded by a backup during a user upgrade;
+- non-destructive to Decisions and History.
 
-Une migration ne supprime jamais silencieusement une décision.
+A migration never silently deletes a Decision.
 
-## Sauvegarde
+## Backup
 
-La sauvegarde minimale comprend :
+The minimum backup contains:
 
-- le fichier SQLite cohérent ;
-- la version du schéma ;
-- les paramètres non secrets ;
-- un manifeste de sauvegarde.
+- the consistent SQLite file;
+- the schema version;
+- non-secret settings;
+- a backup manifest.
 
-La bibliothèque virtuelle ne nécessite pas de sauvegarde puisqu’elle est reconstructible.
+The virtual library does not require backup because it is reconstructible.
 
-## Index recommandés
+## Recommended indexes
 
 - `source_files(work_id)`
 - `source_files(fingerprint)`

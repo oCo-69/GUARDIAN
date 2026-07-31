@@ -1,22 +1,22 @@
 # GUARDIAN
 
-**Guardian est un compagnon local pour Jellyfin.**
+**Guardian is a local companion for Jellyfin.**
 
-Il relie l’organisation réelle d’une collection multimédia aux identités officielles des œuvres, mémorise les choix validés par l’utilisateur, protège ces décisions et construit une bibliothèque virtuelle que Jellyfin peut reconnaître correctement.
+It connects the actual organization of a media collection to the official identities of its works, remembers user-validated choices, protects those decisions, and builds a virtual library that Jellyfin can recognize correctly.
 
-> **Guardian propose. L’utilisateur décide. Guardian mémorise, verrouille et reconstruit.**
+> **Guardian proposes. The user decides. Guardian remembers, locks, and rebuilds.**
 
-## Le problème
+## The problem
 
-Une collection personnelle peut avoir une organisation parfaitement cohérente pour son propriétaire, tout en restant difficile à interpréter pour Jellyfin.
+A personal collection can be perfectly coherent for its owner while remaining difficult for Jellyfin to interpret.
 
-Exemple de fichier source :
+Example source file:
 
 ```text
 Blue Gender - [01x01][Jap&Eng][STEN][570p DVDRip] - One Day.mkv
 ```
 
-Guardian ne renomme pas ce fichier. Il construit une représentation dérivée :
+Guardian does not rename this file. It builds a derived representation:
 
 ```text
 Blue Gender (1999) [tmdbid-...]
@@ -24,62 +24,62 @@ Blue Gender (1999) [tmdbid-...]
     └── Blue Gender S01E01 - One Day.mkv
 ```
 
-La vidéo projetée est un lien vers l’original. La source reste intacte.
+The projected video is a link to the original. The source remains intact.
 
-## Ce que Guardian est
+## What Guardian is
 
-Guardian est :
+Guardian is:
 
-- une application Windows locale ;
-- une mémoire des correspondances entre médias locaux et identités officielles ;
-- un assistant d’identification ;
-- un générateur de bibliothèque virtuelle Jellyfin ;
-- un outil de contrôle, d’historique et de reconstruction.
+- a local Windows application;
+- a memory of the mappings between local media and official identities;
+- an identification assistant;
+- a Jellyfin virtual library generator;
+- a tool for control, history, and reconstruction.
 
-## Ce que Guardian n’est pas
+## What Guardian is not
 
-Guardian n’est pas :
+Guardian is not:
 
-- un remplacement de Jellyfin ;
-- une nouvelle base encyclopédique ;
-- un gestionnaire qui renomme ou déplace les originaux ;
-- un moteur qui applique silencieusement ses suppositions ;
-- un outil qui écrit directement dans la base de données Jellyfin.
+- a replacement for Jellyfin;
+- a new encyclopedic database;
+- a manager that renames or moves original media;
+- an engine that silently applies its assumptions;
+- a tool that writes directly to the Jellyfin database.
 
-## Principes essentiels
+## Essential principles
 
-1. **Source inviolable** — aucun original n’est renommé, déplacé, réécrit ou supprimé.
-2. **Autorité utilisateur** — une suggestion n’est jamais une décision.
-3. **Validation explicite** — une identité doit être validée avant d’être utilisée.
-4. **Verrouillage protecteur** — une décision verrouillée ne peut pas être remplacée automatiquement.
-5. **Historique conservé** — les changements restent explicables et restaurables.
-6. **Sortie reconstructible** — la bibliothèque virtuelle peut être supprimée puis recréée.
-7. **Échec sûr** — en cas d’incertitude, Guardian s’arrête sur le cas concerné.
+1. **Inviolable source** — no original is renamed, moved, rewritten, or deleted.
+2. **User authority** — a Candidate is never a Decision.
+3. **Explicit validation** — an identity must be validated before it can be used.
+4. **Protective locking** — a locked decision cannot be replaced automatically.
+5. **Preserved history** — changes remain explainable and restorable.
+6. **Reconstructible output** — the virtual library can be deleted and rebuilt.
+7. **Safe failure** — when uncertainty remains, Guardian stops on the affected case.
 
-## Première version essayable
+## First testable version
 
-La première version doit permettre de :
+The first version must allow the user to:
 
-- choisir une bibliothèque source et une destination ;
-- scanner la collection ;
-- regrouper les épisodes par série ;
-- isoler les films et les cas ambigus ;
-- rechercher des candidats TMDb ;
-- valider une identité ;
-- verrouiller ou réidentifier une œuvre ;
-- reconstruire une œuvre dans une bibliothèque virtuelle ;
-- consulter l’historique et les conflits ;
-- vérifier que la source n’a jamais été modifiée.
+- choose a source library and a destination;
+- scan the collection;
+- group episodes by series;
+- isolate movies and ambiguous cases;
+- search for TMDb candidates;
+- validate an identity;
+- lock or reidentify a work;
+- rebuild a work in a virtual library;
+- inspect history and conflicts;
+- verify that the source has never been modified.
 
-## Architecture documentaire
+## Documentation architecture
 
-Le point d’entrée officiel est [`docs/README.md`](docs/README.md). Il présente l’ordre de lecture, le rôle de chaque document et leur niveau d’autorité.
+The official entry point is [`docs/README.md`](docs/README.md). It defines the reading order, the role of each document, and its level of authority.
 
-Le [Manifeste](MANIFESTO.md) expose l’intention fondatrice, la [Roadmap](ROADMAP.md) ordonne les jalons et le [Changelog](CHANGELOG.md) consigne les changements notables.
+The [Manifesto](MANIFESTO.md) states the founding intent, the [Roadmap](ROADMAP.md) orders the milestones, and the [Changelog](CHANGELOG.md) records notable changes.
 
-Les documents qui ont servi à la réflexion initiale sont conservés dans [`archives/`](archives/README.md). Ils ne sont pas normatifs.
+Documents that supported the initial design work are preserved in [`archives/`](archives/README.md). They are not normative.
 
-## Structure cible
+## Target structure
 
 ```text
 GUARDIAN/
@@ -102,8 +102,8 @@ GUARDIAN/
 └── tools/
 ```
 
-## Statut
+## Status
 
-Le projet est en phase de fondation de la **v1.0.0-alpha.1**.
+The project is in the **v1.0.0-alpha.1** foundation phase.
 
-L’objectif immédiat est une application Windows essayable, centrée sur le scan, le regroupement des œuvres, l’identification TMDb assistée et la persistance locale des décisions.
+The immediate objective is a testable Windows application focused on scanning, work grouping, assisted TMDb identification, and local persistence of decisions.

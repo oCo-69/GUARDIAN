@@ -1,19 +1,19 @@
-# ADR-008 — Aucune écriture directe dans la base Jellyfin
+# ADR-008 — No direct writes to the Jellyfin database
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-La base interne de Jellyfin évolue et une écriture externe pourrait la corrompre.
+Jellyfin's internal database evolves, and an external write could corrupt it.
 
-## Décision
+## Decision
 
-Guardian agit par structure de fichiers, liens et NFO. Un lecteur Jellyfin peut auditer en lecture seule.
+Guardian acts through directory structure, links, and NFO files. An optional Jellyfin reader can audit in read-only mode.
 
-## Conséquences
+## Consequences
 
-- découplage des versions Jellyfin ;
-- moindre risque de corruption ;
-- résolution des conflits par reconstruction ou action utilisateur.
+- decoupling from Jellyfin versions;
+- lower corruption risk;
+- conflicts resolved through reconstruction or user action.

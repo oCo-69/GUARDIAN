@@ -2,13 +2,13 @@
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md)
 
-Les ADR enregistrent les décisions qui structurent durablement Guardian.
+ADRs record decisions that durably shape Guardian.
 
-Ils ne remplacent pas le [Blueprint](../01_BLUEPRINT.md) et ne peuvent pas le contredire. Ils expliquent pourquoi une décision a été prise, son contexte et ses conséquences.
+They do not replace the [Blueprint](../01_BLUEPRINT.md) and cannot contradict it. They explain why a decision was made, its context, and its consequences.
 
-Seuls les ADR au statut `Accepted` sont normatifs.
+Only ADRs with the `Accepted` status are normative.
 
-Statuts possibles :
+Possible statuses:
 
 - Proposed
 - Accepted

@@ -1,19 +1,19 @@
-# ADR-001 — Source toujours en lecture seule
+# ADR-001 — Source is always read-only
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-La collection originale représente la source de vérité de l’utilisateur. Une erreur de renommage, déplacement ou suppression serait difficilement réversible.
+The user's original collection is the local source of truth. An accidental rename, move, or deletion would be difficult to reverse.
 
-## Décision
+## Decision
 
-Guardian ne possède aucune opération d’écriture sur les racines sources. Les transformations sont réalisées dans une destination séparée.
+Guardian has no write operation for SourceRoots. Transformations are performed in a separate destination.
 
-## Conséquences
+## Consequences
 
-- les accès source utilisent des abstractions en lecture seule ;
-- les tests vérifient l’intégrité avant et après les opérations ;
-- toute fonctionnalité exigeant une écriture source est rejetée.
+- Source access uses read-only abstractions;
+- tests verify integrity before and after operations;
+- any feature requiring a Source write is rejected.

@@ -1,120 +1,114 @@
-# Architecture technique
+# Technical Architecture
 
 > [Documentation](README.md) · [Blueprint](01_BLUEPRINT.md) · [ADR](adr/README.md)
 
-## Objectif
+## Objective
 
-L’architecture doit rendre les invariants du [Blueprint](01_BLUEPRINT.md) difficiles à violer.
+The architecture must make the [Blueprint](01_BLUEPRINT.md) invariants difficult to violate.
 
-Le domaine ne dépend ni de WPF, ni de SQLite, ni de TMDb, ni de Jellyfin. Les dépendances techniques sont injectées derrière des interfaces.
+The Domain depends on neither WPF, SQLite, TMDb, nor Jellyfin. Technical dependencies are injected behind interfaces.
 
-## Solution cible
+## Target solution
 
 ```text
 Guardian.sln
 ├── Guardian.Domain
 ├── Guardian.Application
 ├── Guardian.Infrastructure
-├── Guardian.Providers
+├── Guardian.Providers.Tmdb
 ├── Guardian.Jellyfin
 ├── Guardian.Desktop
 └── Guardian.Tests
 ```
 
-## Responsabilités
+## Responsibilities
 
 ### Guardian.Domain
 
-Contient :
+Contains:
 
-- œuvres et fichiers sources ;
-- identités officielles ;
-- candidats ;
-- décisions ;
-- verrous ;
-- états ;
-- événements métier ;
-- règles de transition ;
+- SourceWorks and SourceFiles;
+- official identities;
+- Candidates;
+- Decisions;
+- Locks;
+- states;
+- domain events;
+- transition rules;
 - invariants.
 
-Ne référence aucun projet technique.
+References no technical project.
 
 ### Guardian.Application
 
-Orchestre les cas d’usage :
+Orchestrates use cases:
 
-- scan ;
-- regroupement ;
-- recherche ;
-- validation ;
-- verrouillage ;
-- réidentification ;
-- restauration ;
-- construction ;
-- audit.
+- scanning;
+- grouping;
+- searching;
+- validation;
+- locking;
+- reidentification;
+- restoration;
+- building;
+- auditing.
 
-Dépend du domaine et d’interfaces abstraites.
+Depends on the Domain and abstract interfaces.
 
 ### Guardian.Infrastructure
 
-Implémente :
+Implements:
 
-- SQLite ;
-- accès au système de fichiers ;
-- empreintes ;
-- création de liens ;
-- transactions de construction ;
-- journalisation ;
-- paramètres et secrets locaux.
+- SQLite;
+- file-system access;
+- fingerprints;
+- link creation;
+- Build transactions;
+- logging;
+- local settings and secrets.
 
-### Guardian.Providers
+### Guardian.Providers.Tmdb
 
-Contient les adaptateurs vers les fournisseurs externes.
+Contains the TMDb adapter.
 
-Premier module prévu :
-
-```text
-Guardian.Providers.Tmdb
-```
-
-Il retourne des candidats et des détails minimaux. Il ne peut pas valider une décision.
+It returns Candidates and minimal details. It cannot validate a Decision.
 
 ### Guardian.Jellyfin
 
-Contient :
+Contains:
 
-- conventions de nommage ;
-- modèle de projection ;
-- génération NFO ;
-- lecture optionnelle de Jellyfin en lecture seule ;
-- audit de correspondance.
+- naming conventions;
+- the Projection model;
+- NFO generation;
+- optional read-only Jellyfin access;
+- correspondence audits.
 
-Il n’écrit jamais directement dans la base Jellyfin.
+It never writes directly to the Jellyfin database.
 
 ### Guardian.Desktop
 
-Application WPF Windows :
+Windows WPF application:
 
-- navigation ;
-- affichage des états ;
-- commandes utilisateur ;
-- configuration ;
-- visualisation des erreurs et de l’historique.
+- navigation;
+- state display;
+- user commands;
+- configuration;
+- error and History visualization.
 
-L’interface n’implémente pas les règles métier.
+The interface does not implement domain rules.
 
 ### Guardian.Tests
 
-Contient :
+Contains:
 
-- tests unitaires du domaine ;
-- tests du parser ;
-- tests de migrations SQLite ;
-- tests d’intégration sur bibliothèque fictive ;
-- tests de construction ;
-- tests de non-régression.
+- Domain unit tests;
+- parser tests;
+- SQLite migration tests;
+- integration tests using a fictional library;
+- Build tests;
+- regression tests.
 
-## Flux de dépendances
+## Dependency flow
 
 ```text
 Desktop ───────────────┐
@@ -123,13 +117,13 @@ Infrastructure ────────┼──> Application ───> Domain
 Jellyfin ──────────────┘
 ```
 
-Le domaine est au centre et ne dépend de rien.
+The Domain is at the center and depends on nothing else.
 
-## Pipeline de scan
+## Scan pipeline
 
 ```text
 SourceRoot
-  ↓ lecture seule
+  ↓ read-only
 File Discovery
   ↓
 Fingerprint
@@ -143,9 +137,9 @@ ScanSnapshot
 Persistence
 ```
 
-Le scan produit des observations. Il ne remplace aucune décision validée.
+A scan produces observations. It never replaces a validated Decision.
 
-## Pipeline d’identification
+## Identification pipeline
 
 ```text
 SourceWork
@@ -163,7 +157,7 @@ Validation
 Decision + HistoryEvent
 ```
 
-## Pipeline de construction
+## Build pipeline
 
 ```text
 Validated Decision
@@ -181,53 +175,53 @@ Safe Switch
 Generated Manifest + HistoryEvent
 ```
 
-## Gestion de la concurrence
+## Concurrency
 
-La v1 peut fonctionner avec une file d’opérations unique pour les écritures.
+v1 may use a single operation queue for writes.
 
-Règles :
+Rules:
 
-- un seul build actif par racine de destination ;
-- transactions SQLite courtes ;
-- annulation prise en charge avant le basculement ;
-- le scan peut être préparé en arrière-plan mais ses résultats sont appliqués de façon atomique ;
-- les événements sont ordonnés.
+- only one active Build per destination root;
+- short SQLite transactions;
+- cancellation supported before the switch;
+- a scan can be prepared in the background, but its results are applied atomically;
+- HistoryEvents are ordered.
 
-## Empreintes
+## Fingerprints
 
-Une empreinte stable doit permettre de reconnaître un fichier malgré les scans successifs.
+A stable fingerprint must recognize a file across successive scans.
 
-La v1 peut combiner :
+v1 may combine:
 
-- chemin normalisé ;
-- taille ;
-- date de modification ;
-- empreinte partielle optionnelle.
+- normalized path;
+- size;
+- modification time;
+- optional partial fingerprint.
 
-Une empreinte complète n’est calculée que lorsqu’elle apporte une valeur réelle.
+A complete fingerprint is calculated only when it provides real value.
 
 ## Configuration
 
-Les paramètres non secrets sont stockés dans SQLite ou dans un fichier local versionné par schéma.
+Non-secret settings are stored in SQLite or in a local schema-versioned file.
 
-Les secrets, notamment le jeton TMDb, doivent être protégés avec les mécanismes Windows appropriés et ne jamais apparaître dans les journaux.
+Secrets, including the TMDb token, must be protected through appropriate Windows mechanisms and must never appear in logs.
 
-## Journalisation
+## Logging
 
-Deux niveaux :
+Two levels:
 
-- message utilisateur clair ;
-- détail technique structuré.
+- clear user-facing message;
+- structured technical details.
 
-Chaque journal doit éviter les secrets et permettre l’anonymisation des chemins pour les rapports de diagnostic.
+Every log must exclude secrets and support path anonymization for diagnostic reports.
 
-## Contraintes de conception
+## Design constraints
 
-- nullable reference types activés ;
-- analyse statique activée ;
-- méthodes asynchrones pour les entrées/sorties ;
-- `CancellationToken` sur les opérations longues ;
-- pas d’accès direct à SQLite depuis l’interface ;
-- pas d’appel fournisseur depuis le domaine ;
-- pas de mutation de décision en dehors du service dédié ;
-- pas de construction à partir d’un candidat non validé.
+- nullable reference types enabled;
+- static analysis enabled;
+- asynchronous methods for input/output;
+- `CancellationToken` on long-running operations;
+- no direct SQLite access from the interface;
+- no Provider call from the Domain;
+- no Decision mutation outside the dedicated service;
+- no Build from an unvalidated Candidate.

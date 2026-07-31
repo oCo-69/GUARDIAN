@@ -234,7 +234,7 @@ Examples include narrative franchises, sagas, shared universes and other relatio
 
 **Invariant**
 
-Guardian may prepare and group hundreds of proposals for batch decision review. Each validation remains an explicit user action. Automatic or implicit validation is forbidden, as required by [ADR-003](adr/ADR-003-user-validation.md).
+Guardian may prepare and group hundreds of Candidates for batch decision review. Each validation remains an explicit user action. Automatic or implicit validation is forbidden, as required by [ADR-003](adr/ADR-003-user-validation.md).
 
 ---
 

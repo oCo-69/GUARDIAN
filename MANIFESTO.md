@@ -1,78 +1,78 @@
-# Manifeste Guardian
+# Guardian Manifesto
 
-> La documentation normative est accessible depuis [`docs/README.md`](docs/README.md).
+> Normative documentation is available from [`docs/README.md`](docs/README.md).
 
-## La collection appartient à l’utilisateur
+## The collection belongs to the user
 
-Une bibliothèque multimédia n’est pas seulement une liste de fichiers. Elle reflète des choix, une organisation, une histoire et une manière personnelle de relier les œuvres entre elles.
+A media library is more than a list of files. It reflects choices, organization, history, and a personal way of relating works to one another.
 
-Guardian part de cette réalité : **la collection de l’utilisateur est la source de vérité locale**.
+Guardian starts from this reality: **the user's collection is the local source of truth**.
 
-Il ne demande pas de la réorganiser pour satisfaire un logiciel.
+It does not require the user to reorganize that collection to satisfy software.
 
-## La technologie doit disparaître derrière l’expérience
+## Technology should disappear behind the experience
 
-Guardian n’est pas la bibliothèque.
+Guardian is not the library.
 
-Il n’est pas la destination, mais il simplifie le voyage.
+It is not the destination, but it makes the journey easier.
 
-Il reste présent lorsqu’une décision doit être comprise, protégée ou restaurée, puis s’efface lorsque tout fonctionne.
+It remains present when a decision must be understood, protected, or restored, then recedes when everything works.
 
-## Un compagnon, pas un maître
+## A companion, not a master
 
-Guardian peut analyser, proposer et signaler.
+Guardian can analyze, propose, and report.
 
-Il ne décide jamais à la place de l’utilisateur.
+It never decides on behalf of the user.
 
-Une correspondance probable n’est pas une correspondance validée. Une meilleure suggestion future n’annule pas un choix déjà confirmé. Une automatisation ne doit pas effacer la souveraineté de la personne qui connaît sa collection.
+A probable match is not a validated Decision. A better future Candidate does not cancel a previously confirmed choice. Automation must not erase the authority of the person who knows the collection.
 
-## La mémoire plutôt que l’encyclopédie
+## Memory rather than encyclopedia
 
-Guardian ne cherche pas à contenir le monde du cinéma ou de l’animation.
+Guardian does not seek to contain the worlds of cinema or animation.
 
-Les fournisseurs de métadonnées savent décrire les œuvres. Jellyfin sait les présenter et les lire. Guardian conserve uniquement le lien essentiel :
+Metadata providers know how to describe works. Jellyfin knows how to present and play them. Guardian preserves only the essential link:
 
 ```text
-Média local ↔ identité officielle
+Local media ↔ official identity
 ```
 
-Sa valeur vient de la fiabilité de cette mémoire, pas du volume d’informations qu’il accumule.
+Its value comes from the reliability of this memory, not from the volume of information it accumulates.
 
-## Protéger les acquis
+## Protect established work
 
-Une identité validée peut être verrouillée.
+A validated identity can be locked.
 
-Le verrou n’est pas décoratif. Il signifie qu’aucun scan, algorithme, fournisseur ou changement de version ne peut remplacer la décision sans une action explicite de l’utilisateur.
+The lock is not decorative. It means that no scan, algorithm, provider, or version change can replace the decision without an explicit user action.
 
-Guardian doit pouvoir évoluer sans faire perdre le travail déjà accompli.
+Guardian must be able to evolve without losing work that has already been completed.
 
-## Ne jamais toucher aux originaux
+## Never touch the originals
 
-La bibliothèque source est inviolable.
+The source library is inviolable.
 
-Guardian ne renomme pas, ne déplace pas, ne réécrit pas et ne supprime pas les médias originaux. Il produit une projection séparée, jetable et reconstructible.
+Guardian does not rename, move, rewrite, or delete original media. It produces a separate, disposable, and reconstructible projection.
 
-Cette règle n’est pas une préférence : c’est une frontière de conception.
+This rule is not a preference; it is a design boundary.
 
-## Expliquer plutôt que masquer
+## Explain rather than conceal
 
-Toute transformation importante doit pouvoir être comprise :
+Every significant transformation must be understandable:
 
-- ce qui a changé ;
-- quand ;
-- pour quelle œuvre ;
-- à partir de quelle décision ;
-- par quelle action ;
-- avec quel résultat.
+- what changed;
+- when;
+- for which work;
+- from which decision;
+- through which action;
+- with what result.
 
-Un logiciel rassurant ne prétend pas que rien ne peut échouer. Il permet de comprendre l’échec sans dégrader les acquis.
+Trustworthy software does not pretend that nothing can fail. It makes failure understandable without degrading established work.
 
-## Révéler les liens qui existent déjà
+## Reveal relationships that already exist
 
-Guardian n’ajoute pas artificiellement de la valeur à la collection.
+Guardian does not artificially add value to the collection.
 
-Il révèle les liens qui existent déjà entre les fichiers, les œuvres, les séries, les saisons, les univers et les décisions de l’utilisateur.
+It reveals relationships that already exist between files, works, series, seasons, universes, and user decisions.
 
-## Formule fondatrice
+## Founding statement
 
-> **Guardian propose. L’utilisateur décide. Guardian mémorise, verrouille et reconstruit.**
+> **Guardian proposes. The user decides. Guardian remembers, locks, and rebuilds.**

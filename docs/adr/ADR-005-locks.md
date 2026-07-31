@@ -1,19 +1,19 @@
-# ADR-005 — Les décisions validées peuvent être verrouillées
+# ADR-005 — Validated Decisions can be locked
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Une nouvelle analyse ou un meilleur candidat ne doit pas annuler un choix déjà confirmé.
+A new analysis or better Candidate must not cancel a previously confirmed choice.
 
-## Décision
+## Decision
 
-Le verrou est un invariant métier empêchant toute substitution automatique. Une réidentification exige un déverrouillage explicite.
+The Lock is a domain invariant that prevents automatic replacement. Reidentification requires explicit unlocking.
 
-## Conséquences
+## Consequences
 
-- contrôle dans le domaine ;
-- événements de verrouillage et déverrouillage ;
-- les conflits sont signalés mais non corrigés automatiquement.
+- enforcement in the Domain;
+- locking and unlocking HistoryEvents;
+- conflicts are reported but never corrected automatically.

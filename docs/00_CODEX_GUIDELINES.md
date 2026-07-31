@@ -96,6 +96,8 @@ The active documentation must remain limited and non-redundant.
 Codex must:
 
 - keep [`README.md`](README.md) usable as the documentation entry point;
+- write every repository document, source comment, and commit message directly in English;
+- use canonical domain terms from the [Blueprint glossary](01_BLUEPRINT.md#glossary) consistently and avoid synonyms for adopted concepts;
 - maintain links after moving or renaming files;
 - update `CHANGELOG.md` for notable changes;
 - preserve archives as historical material;

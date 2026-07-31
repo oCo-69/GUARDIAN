@@ -1,19 +1,19 @@
-# ADR-003 — Aucune proposition n’est appliquée sans validation
+# ADR-003 — No Candidate is applied without validation
 
 > [Documentation](../README.md) · [Blueprint](../01_BLUEPRINT.md) · [ADR](README.md)
 
-**Statut : Accepted**
+**Status: Accepted**
 
-## Contexte
+## Context
 
-Une recherche automatique peut produire un résultat plausible mais incorrect.
+An automatic search can produce a plausible but incorrect result.
 
-## Décision
+## Decision
 
-Tout résultat de fournisseur est un candidat. Seule une action explicite crée une décision validée.
+Every Provider result is a Candidate. Only an explicit user action creates a validated Decision.
 
-## Conséquences
+## Consequences
 
-- le constructeur refuse les candidats ;
-- le score de confiance aide à trier, jamais à décider ;
-- les imports automatiques restent des propositions à vérifier explicitement.
+- the Builder rejects Candidates;
+- confidence scores help with ordering but never decide;
+- automatic imports remain Candidates requiring explicit review.
