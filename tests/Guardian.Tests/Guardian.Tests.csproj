@@ -14,5 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Guardian.Domain\Guardian.Domain.csproj" />
     <ProjectReference Include="..\..\src\Guardian.Application\Guardian.Application.csproj" />
+    <ProjectReference Include="..\..\src\Guardian.Jellyfin\Guardian.Jellyfin.csproj" />
   </ItemGroup>
 </Project>
