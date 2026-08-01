@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Guardian.Application\Guardian.Application.csproj" />
+    <ProjectReference Include="..\Guardian.Domain\Guardian.Domain.csproj" />
+    <ProjectReference Include="..\Guardian.Jellyfin\Guardian.Jellyfin.csproj" />
+  </ItemGroup>
+
+</Project>
