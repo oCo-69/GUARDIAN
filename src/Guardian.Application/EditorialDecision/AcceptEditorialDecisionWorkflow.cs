@@ -1,4 +1,5 @@
 using Guardian.Application.CandidateReview;
+using Guardian.Application.CurrentUnderstanding;
 using Guardian.Application.Identity;
 using Guardian.Domain.Identity;
 
@@ -38,6 +39,9 @@ public sealed class AcceptEditorialDecisionWorkflow
             validation,
             validation.Status == IdentityValidationStatus.Established);
     }
+
+    public CurrentUnderstandingExplanation ExplainCurrentUnderstanding(SourceWorkId sourceWorkId) =>
+        new ExplainCurrentUnderstandingWorkflow(correspondenceWorkflow).Explain(sourceWorkId);
 }
 
 public sealed record EditorialDecisionAcceptanceResult(
