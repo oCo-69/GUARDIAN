@@ -2,5 +2,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Guardian.Application\Guardian.Application.csproj" />
     <ProjectReference Include="..\Guardian.Domain\Guardian.Domain.csproj" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
   </ItemGroup>
 </Project>

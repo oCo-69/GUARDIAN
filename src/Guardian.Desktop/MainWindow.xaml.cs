@@ -1,11 +1,15 @@
+using System.IO;
 using System.Net.Http;
 using System.Windows;
 using Guardian.Application.CandidateDiscovery;
 using Guardian.Application.CandidateReview;
 using Guardian.Application.CurrentUnderstanding;
 using Guardian.Application.EditorialDecision;
+using Guardian.Application.Identity;
 using Guardian.Application.LibraryObservation;
+using Guardian.Application.Persistence;
 using Guardian.Domain.Identity;
+using Guardian.Infrastructure;
 using Guardian.Jellyfin.LibraryObservation;
 using Guardian.Providers.Tmdb;
 
@@ -16,10 +20,38 @@ public partial class MainWindow : Window
     private LibraryObservationResult? observedLibrary;
     private CandidateReviewContext? reviewContext;
     private AcceptEditorialDecisionWorkflow? acceptanceWorkflow;
+    private readonly SqliteEditorialMemoryStore memoryStore = new(
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Guardian", "editorial-memory.db"));
 
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private async void WindowLoaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            EditorialMemorySnapshot snapshot = await memoryStore.LoadAsync();
+            if (snapshot.Decisions.Count == 0)
+            {
+                return;
+            }
+
+            IdentityCorrespondenceWorkflow restored = IdentityCorrespondenceWorkflow.Restore(
+                snapshot.Decisions,
+                snapshot.HistoryEvents);
+            CurrentUnderstandingExplanation explanation = new ExplainCurrentUnderstandingWorkflow(restored)
+                .Explain(snapshot.Decisions[0].SourceWorkId);
+            ExplanationTextBox.Text = FormatExplanation(explanation);
+            StatusTextBlock.Text = $"Restored {snapshot.Decisions.Count} Decision(s) and " +
+                $"{snapshot.HistoryEvents.Count} HistoryEvent(s) from editorial memory.";
+        }
+        catch (Exception exception)
+        {
+            SetFailure(exception);
+        }
     }
 
     private async void ObserveLibraryClick(object sender, RoutedEventArgs e)
@@ -72,7 +104,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void AcceptCandidateClick(object sender, RoutedEventArgs e)
+    private async void AcceptCandidateClick(object sender, RoutedEventArgs e)
     {
         if (reviewContext is null || CandidatesList.SelectedItem is not CandidateDisplay selected)
         {
@@ -91,6 +123,8 @@ public partial class MainWindow : Window
                 StatusTextBlock.Text = $"Decision was not established: {result.Validation.Status}.";
                 return;
             }
+
+            await memoryStore.SaveAsync(result.Decision!, result.HistoryEvent!);
 
             CurrentUnderstandingExplanation explanation = acceptanceWorkflow
                 .ExplainCurrentUnderstanding(reviewContext.SourceWork.Id);

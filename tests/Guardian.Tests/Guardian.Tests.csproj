@@ -16,5 +16,6 @@
     <ProjectReference Include="..\..\src\Guardian.Application\Guardian.Application.csproj" />
     <ProjectReference Include="..\..\src\Guardian.Jellyfin\Guardian.Jellyfin.csproj" />
     <ProjectReference Include="..\..\src\Guardian.Providers.Tmdb\Guardian.Providers.Tmdb.csproj" />
+    <ProjectReference Include="..\..\src\Guardian.Infrastructure\Guardian.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

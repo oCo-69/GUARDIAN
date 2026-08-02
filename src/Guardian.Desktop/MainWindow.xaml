@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Guardian.Desktop"
         mc:Ignorable="d"
-        Title="Guardian Companion" Height="700" Width="980">
+        Title="Guardian Companion" Height="700" Width="980" Loaded="WindowLoaded">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

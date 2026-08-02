@@ -28,6 +28,42 @@ public sealed class IdentityCorrespondenceWorkflow
         this.currentTime = currentTime ?? (() => DateTimeOffset.UtcNow);
     }
 
+    public static IdentityCorrespondenceWorkflow Restore(
+        IEnumerable<IdentityDecision> decisions,
+        IEnumerable<IdentityValidationHistoryEvent> historyEvents,
+        IEnumerable<SourceWork>? sourceWorks = null,
+        IEnumerable<IdentityCandidate>? candidates = null)
+    {
+        ArgumentNullException.ThrowIfNull(decisions);
+        ArgumentNullException.ThrowIfNull(historyEvents);
+
+        IdentityCorrespondenceWorkflow workflow = new(
+            sourceWorks ?? [],
+            candidates ?? []);
+        Dictionary<DecisionId, IdentityValidationHistoryEvent> events = historyEvents
+            .ToDictionary(historyEvent => historyEvent.DecisionId);
+        foreach (IdentityDecision decision in decisions)
+        {
+            if (!events.TryGetValue(decision.Id, out IdentityValidationHistoryEvent? historyEvent) ||
+                historyEvent.SourceWorkId != decision.SourceWorkId ||
+                historyEvent.CandidateId != decision.CandidateId)
+            {
+                throw new InvalidOperationException(
+                    "Every persisted Decision must have a matching HistoryEvent.");
+            }
+
+            workflow.Record(new InitialIdentityValidationRecords(decision, historyEvent));
+        }
+
+        if (events.Count != workflow.validationRecords.Count)
+        {
+            throw new InvalidOperationException(
+                "Persisted HistoryEvents must reference a persisted Decision.");
+        }
+
+        return workflow;
+    }
+
     public IReadOnlyList<IdentityDecision> Decisions =>
         Array.AsReadOnly(validationRecords.Select(records => records.Decision).ToArray());
 

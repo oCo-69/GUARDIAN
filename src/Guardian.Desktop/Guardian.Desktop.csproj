@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Guardian.Domain\Guardian.Domain.csproj" />
     <ProjectReference Include="..\Guardian.Jellyfin\Guardian.Jellyfin.csproj" />
     <ProjectReference Include="..\Guardian.Providers.Tmdb\Guardian.Providers.Tmdb.csproj" />
+    <ProjectReference Include="..\Guardian.Infrastructure\Guardian.Infrastructure.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>

@@ -26,6 +26,17 @@ public sealed class IdentityDecision
         SupersedesDecisionId = supersedesDecisionId;
     }
 
+    internal static IdentityDecision Rehydrate(
+        DecisionId id,
+        SourceWorkId sourceWorkId,
+        WorkId acceptedWorkId,
+        CandidateId candidateId,
+        EditorialAuthority authority,
+        DateTimeOffset decidedAt,
+        ProviderIdentity? providerEvidence,
+        DecisionId? supersedesDecisionId) =>
+        new(id, sourceWorkId, acceptedWorkId, candidateId, authority, decidedAt, providerEvidence, supersedesDecisionId);
+
     public DecisionId Id { get; }
 
     public SourceWorkId SourceWorkId { get; }
